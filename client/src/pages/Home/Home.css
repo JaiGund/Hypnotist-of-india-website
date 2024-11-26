@@ -1,0 +1,235 @@
+/* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fa; /* Light background color for the body */
+  color: #333; /* Dark text color for better readability */
+}
+
+/* Home Section */
+.home {
+  text-align: center;
+  padding: 30px;
+  background-color: #ffffff; /* White background for the homepage */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  margin: 20px;
+  border-radius: 8px;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #007bff;
+  color: white;
+  padding: 80px 20px; /* Increased padding for a more spacious layout */
+  text-align: center;
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  font-weight: bold; /* Bold for emphasis */
+  letter-spacing: 1px;
+}
+
+.hero-section p {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto; /* Center the paragraph */
+}
+
+.hero-section .cta-button {
+  background-color: #0056b3;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 30px; /* Fully rounded button */
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2); /* Soft glowing effect */
+}
+
+.hero-section .cta-button:hover {
+  background-color: #003f7f;
+  transform: translateY(-5px); /* Slight upward movement */
+}
+
+/* Courses Section */
+.courses-section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.courses-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.courses-list {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.course-card {
+  background-color: white;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* More defined shadow */
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 320px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.course-card p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.course-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.course-card button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Benefits Section */
+.benefits-section {
+  padding: 60px 20px;
+  background-color: #f8f9fa; /* Light background */
+  text-align: center;
+}
+
+.benefits-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.benefits-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.benefits-section li {
+  font-size: 1.3rem;
+  margin: 15px 0;
+  color: #555;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: 60px 20px;
+}
+
+.testimonials-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.testimonial {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.testimonial span {
+  display: block;
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #333;
+  font-style: italic;
+}
+
+/* Footer Call-to-Action */
+.footer-cta {
+  background-color: #007bff;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-cta h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.footer-cta button {
+  background-color: #0056b3;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-cta button:hover {
+  background-color: #003f7f;
+  transform: translateY(-5px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .courses-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .course-card {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .hero-section h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-section p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .footer-cta h2 {
+    font-size: 2rem;
+  }
+
+  .footer-cta button {
+    font-size: 1rem;
+  }
+}

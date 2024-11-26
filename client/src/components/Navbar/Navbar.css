@@ -1,0 +1,115 @@
+/* General styles for the Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #343a40; /* Dark background color for a professional look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow for depth */
+  font-family: 'Arial', sans-serif;
+  border-radius: 8px; /* Slight rounding on edges for a smoother appearance */
+}
+
+/* Styling for the right-side with the title */
+.right-side h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #f8f9fa; /* Light color for contrast on dark background */
+  margin: 0;
+  text-transform: uppercase; /* For a more professional feel */
+  letter-spacing: 1px; /* Slight spacing for the text */
+}
+
+/* Styling for the main heading */
+.right-side .main-heading {
+  text-decoration: underline dotted #007bff; /* Dotted underline with a blue color */
+  padding-bottom: 5px;
+}
+
+/* Styling for the left-side navigation links */
+.left-side {
+  display: flex;
+  gap: 30px; /* Increased space between the links */
+}
+
+.left-side p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #e1e1e1; /* Lighter gray color for contrast */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: 5px 10px;
+  border-radius: 4px; /* Add rounded corners to the links */
+}
+
+.left-side p:hover {
+  color: #007bff; /* Blue on hover for interaction feedback */
+  background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+  transform: translateY(-2px); /* Slight upward movement on hover */
+}
+
+/* Styling for the sign-in button */
+.sign-in button {
+  background-color: #007bff; /* Primary blue color */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 30px; /* Fully rounded button */
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: bold; /* Bolder text for emphasis */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2); /* Soft glow effect */
+}
+
+.sign-in button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight upward movement */
+  box-shadow: 0 5px 25px rgba(0, 123, 255, 0.3); /* Enhanced glow effect */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  /* Stack elements vertically for smaller screens */
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .right-side h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .left-side {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .left-side p {
+    font-size: 1rem;
+  }
+
+  .sign-in button {
+    width: 100%; /* Full-width button for smaller screens */
+    padding: 14px;
+    font-size: 1.1rem;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further adjustments for very small screens */
+  .right-side h2 {
+    font-size: 1.2rem;
+  }
+
+  .left-side p {
+    font-size: 0.9rem;
+  }
+
+  .sign-in button {
+    font-size: 1rem;
+  }
+}
