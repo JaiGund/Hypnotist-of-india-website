@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser';
 import { connectToDb } from './config/db.js';
 import authRoutes from './routes/authRoutes.js'
+import cors from 'cors';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ connectToDb();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);

@@ -1,5 +1,9 @@
 /* General styles for the Navbar container */
 .navbar {
+  position: fixed; /* Makes the navbar fixed at the top */
+  top: 0; /* Stick it to the top */
+  width: 95%; /* Full width */
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
