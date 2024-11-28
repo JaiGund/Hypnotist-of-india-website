@@ -6,6 +6,9 @@ import Courses from './pages/Courses/Courses'
 import BookAppointment from './pages/BookApointment/BookApointment'
 import SignUp from './pages/SignUp/SignUp'
 import SignIn from './pages/SignIn/SignIn'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const App = () => {
   return (
@@ -18,6 +21,7 @@ const App = () => {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
       </Routes>
+      <ToastContainer />
     </div>
   ) 
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom"; // Import for navigation
 import "./SignIn.css";
 
 const SignIn = () => {
@@ -9,19 +10,28 @@ const SignIn = () => {
     password: "",
   });
 
+  const navigate = useNavigate(); // Initialize navigation
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => { 
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/signin", formData,{withCredentials:true});
-      toast.success("Signed in successfully!");
-      console.log(response.data);
-      // Handle success, like redirecting to a dashboard
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signin",
+        formData,
+        { withCredentials: true }
+      );
+
+      toast.success("Signed in successfully!"); // Show success toast
+      
+      setFormData({ email: "", password: "" }); // Clear the form
+      
+      navigate("/"); // Redirect to the homepage
     } catch (error) {
-      toast.error(error.response?.data?.msg || "Invalid credentials");
+      toast.error(error.response?.data?.msg || "Invalid credentials"); // Show error toast
       console.error(error);
     }
   };
