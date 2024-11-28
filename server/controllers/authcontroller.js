@@ -3,6 +3,36 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 
+
+// Validate token
+const validateToken = (req, res) => {
+  const token = req.cookies.token; // Retrieve token from cookies
+  if (!token) {
+    return res.status(200).json({ isAuthenticated: false }); // No token, user is not authenticated
+  }
+
+  try {
+    jwt.verify(token, process.env.JWT_SECRET); // Verify the token
+    return res.status(200).json({ isAuthenticated: true }); // Valid token, user is authenticated
+  } catch (error) {
+    return res.status(200).json({ isAuthenticated: false }); // Invalid token
+  }
+};
+
+// Logout user
+const logout = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
+    sameSite: 'strict',
+  });
+  res.status(200).json({ msg: 'Logged out successfully' });
+};
+
+export { validateToken, logout };
+
+
+
 const signUp = async (req, res) => {
   try {
     const { firstName, middleName, lastName, contactNumber, email, password, city, state } = req.body;

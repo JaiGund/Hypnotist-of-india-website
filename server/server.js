@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import { connectToDb } from './config/db.js';
 import authRoutes from './routes/authRoutes.js'
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ connectToDb();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cookieParser()); // Middleware to parse cookies
 const allowedOrigins = ["http://localhost:5173"]; // Replace with your frontend URL
 
 app.use(

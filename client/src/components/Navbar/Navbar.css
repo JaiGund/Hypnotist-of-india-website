@@ -72,6 +72,15 @@
   box-shadow: 0 5px 25px rgba(0, 123, 255, 0.3); /* Enhanced glow effect */
 }
 
+.sign-in .logout-btn{
+  background-color: rgb(209, 39, 39);
+}
+
+.sign-in .logout-btn:hover{
+  background-color: #aa1a1a;
+}
+
+
 /* Responsive styles */
 @media (max-width: 768px) {
   /* Stack elements vertically for smaller screens */
