@@ -19,7 +19,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [
-      ''
+      'Med'
     ],
   },
   duration: {
@@ -39,10 +39,10 @@ const courseSchema = new mongoose.Schema({
     type: String, // URL to the course thumbnail image
     required: true,
   },
-  link:{
+  links:[{
     type:String,
     required: true
-  },
+  }],
   createdAt: {
     type: Date,
     default: Date.now,

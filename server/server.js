@@ -6,6 +6,7 @@ import { connectToDb } from './config/db.js';
 import authRoutes from './routes/authRoutes.js'
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import courseRoutes from './routes/courseRoutes.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
 
 // Start the server
 const PORT = 5000;

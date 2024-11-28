@@ -1,69 +1,80 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Courses.css';
 
-const Courses = () => {
+const CoursesPage = () => {
+  const [courses, setCourses] = useState([]);  // Ensure initial state is an empty array
+  const [loading, setLoading] = useState(true); // For loading state
+  const [error, setError] = useState(null);     // For handling errors
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/courses');
+        if (Array.isArray(response.data)) {
+          setCourses(response.data); // Set the courses from response.data.data
+        } else {
+          throw new Error("Expected response to be an array");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+
+    fetchCourses();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;  // Show loading state
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;  // Show error message
+  }
+
   return (
-    <div className="courses-page">
-      <h1>Explore Our Hypnosis Courses</h1>
-      <p className="intro-text">Unlock the power of hypnosis with our expertly designed courses for beginners and professionals alike.</p>
-
-      <div className="courses-container">
-        {/* Course 1 */}
-        <div className="course-card">
-          <h2>Self-Hypnosis Mastery</h2>
-          <div className="video-container">
-            <iframe
-              src="https://www.youtube.com/embed/OdOwbLe8vF4"
-              title="Self-Hypnosis Mastery"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+    <div className="courses-container">
+      {courses.length > 0 ? (
+        courses.map((course) => (
+          <div key={course._id} className="course-card">
+            <h2>{course.title}</h2>
+            <p>{course.description}</p>
+            <p className="course-price">Price: ${course.price}</p>
+            <p>Level: {course.level}</p>
+            <p>Duration: {course.duration} hours</p>
+            <div className="course-links">
+              <strong>Course Videos:</strong>
+              <ul>
+                {course.links.map((link, index) => (
+                  <li key={index}>
+                    <a href={link} target="_blank" rel="noopener noreferrer">
+                      Watch Video {index + 1}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {course.links.length > 0 && (
+              <div className="video-thumbnail">
+                <iframe
+                  src={course.links[0]} // Shows the first video link as a thumbnail preview
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Course Video"
+                />
+              </div>
+            )}
           </div>
-          <p>
-            Empower yourself by mastering self-hypnosis techniques. Learn to relax, focus, and enhance your well-being in this comprehensive course.
-          </p>
-          <button>Enroll Now</button>
-        </div>
-
-        {/* Course 2 */}
-        <div className="course-card">
-          <h2>Hypnotherapy Certification</h2>
-          <div className="video-container">
-            <iframe
-              src="https://www.youtube.com/embed/5E3JNBl0u-s"
-              title="Hypnotherapy Certification"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-          <p>
-            Become a certified hypnotherapist with this professional training course. Perfect for those who want to help others through hypnosis.
-          </p>
-          <button>Enroll Now</button>
-        </div>
-
-        {/* Course 3 */}
-        <div className="course-card">
-          <h2>Quit Smoking with Hypnosis</h2>
-          <div className="video-container">
-            <iframe
-              src="https://www.youtube.com/embed/sGPffmF7RSo"
-              title="Quit Smoking with Hypnosis"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-          <p>
-            A specialized course designed to help you or your clients quit smoking using the power of hypnosis and mental reprogramming.
-          </p>
-          <button>Enroll Now</button>
-        </div>
-      </div>
+        ))
+      ) : (
+        <p>No courses available</p>
+      )}
     </div>
   );
 };
 
-export default Courses;
+export default CoursesPage;
