@@ -1,7 +1,7 @@
 // controllers/authController.js
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import User from '../models/userSchema.js';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/userSchema.js";
 
 const signUp = async (req, res) => {
   try {
@@ -9,13 +9,13 @@ const signUp = async (req, res) => {
 
     // Input validation (basic validation)
     if (!firstName || !lastName || !contactNumber || !email || !password) {
-      return res.status(400).json({ msg: 'Please fill in all required fields' });
+      return res.status(400).json({ msg: "Please fill in all required fields" });
     }
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ msg: 'User with this email already exists' });
+      return res.status(400).json({ msg: "User with this email already exists" });
     }
 
     // Hash the password before storing it in the database
@@ -31,30 +31,37 @@ const signUp = async (req, res) => {
       email,
       password: hashedPassword,
       city,
-      state
+      state,
     });
 
     // Save the user to the database
     await newUser.save();
 
-    // Create JWT token (optional)
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Create JWT token
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    // Set the token in a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      sameSite: "strict", // Adjust to "lax" or "none" if needed
+      maxAge: 3600000, // 1 hour
+    });
 
     // Send the response with the token
     res.status(201).json({
-      msg: 'User registered successfully',
+      msg: "User registered successfully",
       token,
       user: {
         id: newUser._id,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
-      }
+      },
     });
-
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: 'Server error' });
+    res.status(500).json({ msg: "Server error" });
   }
 };
 
@@ -79,6 +86,15 @@ const signIn = async (req, res) => {
       expiresIn: "1h",
     });
 
+    // Set the token in a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      sameSite: "strict", // Adjust to "lax" or "none" if needed
+      maxAge: 3600000, // 1 hour
+    });
+
+    // Send the response
     res.status(200).json({
       msg: "Sign-in successful",
       token,
@@ -95,6 +111,4 @@ const signIn = async (req, res) => {
   }
 };
 
-
-// Use ES6 export for this function
-export { signUp, signIn};
+export { signUp, signIn };

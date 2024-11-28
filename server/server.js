@@ -15,7 +15,14 @@ connectToDb();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+const allowedOrigins = ["http://localhost:5173"]; // Replace with your frontend URL
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true, // Allow cookies to be sent
+  })
+);
 
 // Routes
 app.use('/api/auth', authRoutes);

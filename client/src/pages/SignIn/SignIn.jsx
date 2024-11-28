@@ -13,10 +13,10 @@ const SignIn = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/signin", formData);
+      const response = await axios.post("http://localhost:5000/api/auth/signin", formData,{withCredentials:true});
       toast.success("Signed in successfully!");
       console.log(response.data);
       // Handle success, like redirecting to a dashboard
