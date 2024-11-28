@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"; // Import for navigation
 import "./SignIn.css";
+import { AuthContext } from "../../context/AuthContext";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
+  const {isAuthenticated} = useContext(AuthContext);
   const navigate = useNavigate(); // Initialize navigation
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

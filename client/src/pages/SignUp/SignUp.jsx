@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import "./SignUp.css";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,14 @@ const Signup = () => {
     city: "",
     state: "",
   });
+  const {isAuthenticated} = useContext(AuthContext);
+  const navigate = useNavigate(); // Initialize navigation
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
