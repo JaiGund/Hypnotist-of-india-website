@@ -11,7 +11,10 @@
   background-color: #343a40; /* Dark background color for a professional look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow for depth */
   font-family: 'Arial', sans-serif;
-  border-radius: 8px; /* Slight rounding on edges for a smoother appearance */
+}
+
+.left-side .route-links{
+  text-decoration: none;
 }
 
 /* Styling for the right-side with the title */
@@ -26,7 +29,7 @@
 
 /* Styling for the main heading */
 .right-side .main-heading {
-  text-decoration: underline dotted #007bff; /* Dotted underline with a blue color */
+  text-decoration: none; /* Dotted underline with a blue color */
   padding-bottom: 5px;
 }
 

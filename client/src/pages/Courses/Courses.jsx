@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Courses.css';
 
+// Inside CoursesPage component
 const CoursesPage = () => {
-  const [courses, setCourses] = useState([]);  // Ensure initial state is an empty array
-  const [loading, setLoading] = useState(true); // For loading state
-  const [error, setError] = useState(null);     // For handling errors
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/courses');
         if (Array.isArray(response.data)) {
-          setCourses(response.data); // Set the courses from response.data.data
+          setCourses(response.data);
         } else {
           throw new Error("Expected response to be an array");
         }
@@ -22,17 +23,31 @@ const CoursesPage = () => {
         setLoading(false);
       }
     };
-    
 
     fetchCourses();
   }, []);
 
+  const handlePurchase = async (courseId) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/purchase',
+        { courseId },
+        { withCredentials: true }  // Ensure cookies are included with the request
+      );
+      console.log(response.data.message);
+      // Handle success (e.g., display success message)
+    } catch (err) {
+      console.error('Error during purchase:', err);
+      // Handle error (e.g., display error message)
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>;  // Show loading state
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;  // Show error message
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -60,7 +75,7 @@ const CoursesPage = () => {
             {course.links.length > 0 && (
               <div className="video-thumbnail">
                 <iframe
-                  src={course.links[0]} // Shows the first video link as a thumbnail preview
+                  src={course.links[0]}
                   frameBorder="0"
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -68,6 +83,8 @@ const CoursesPage = () => {
                 />
               </div>
             )}
+            {/* Add the purchase button and pass the course._id to handlePurchase */}
+            <button onClick={()=>handlePurchase(course._id)}>Buy Course</button>
           </div>
         ))
       ) : (
@@ -78,3 +95,4 @@ const CoursesPage = () => {
 };
 
 export default CoursesPage;
+

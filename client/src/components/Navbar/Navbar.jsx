@@ -14,14 +14,17 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="left-side">
-        <Link to={"/"}>
+        <Link to={"/"} className="route-links">
           <p>Home</p>
         </Link>
-        <Link to={"/courses"}>
+        <Link to={"/courses"} className="route-links">
           <p>Courses</p>
         </Link>
-        <Link to="/bookapointment">
+        <Link to="/bookapointment" className="route-links">
           <p>Book An Appointment</p>
+        </Link>
+        <Link to="/mydashboard" className="route-links">
+          <p>My Dashboard</p>
         </Link>
       </div>
       <div className="sign-in">

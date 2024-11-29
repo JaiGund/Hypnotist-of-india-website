@@ -6,9 +6,9 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  contactNumber:{type: Number,required: true},
-  city:{type:String, required:true},
-  state:{type:String, required:true},
+  contactNumber: { type: Number, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
   boughtCourses: [
     {
       course: {

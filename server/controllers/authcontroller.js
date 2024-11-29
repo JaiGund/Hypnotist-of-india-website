@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 
-
 // Validate token
 const validateToken = (req, res) => {
   const token = req.cookies.token; // Retrieve token from cookies
