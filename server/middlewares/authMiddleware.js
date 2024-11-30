@@ -18,8 +18,7 @@ export const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Attach the user object to the request (req.user)
-    req.user = await User.findById(decoded.userId).select('-password');
-    console.log('User from token:', req.user); // Ensure user is being correctly assigned
+    req.user = await User.findById(decoded.userId).select('-password'); // Ensure user is being correctly assigned
     next();
   } catch (error) {
     console.error('Token verification failed:', error);

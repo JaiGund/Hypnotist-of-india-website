@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 const MyDashboard = () => {
   const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [error, setError] = useState(null);
-  const {url} = useContext(AuthContext);
+  const { url } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchPurchasedCourses = async () => {
@@ -21,6 +21,10 @@ const MyDashboard = () => {
     fetchPurchasedCourses();
   }, []);
 
+  const disableRightClick = (e) => {
+    e.preventDefault(); // Disable right-click on the video
+  };
+
   return (
     <div className="dashboard-container">
       <h2>My Dashboard</h2>
@@ -29,7 +33,7 @@ const MyDashboard = () => {
         {purchasedCourses.length === 0 ? (
           <p className="no-courses">No courses purchased yet.</p>
         ) : (
-          purchasedCourses.map(course => (
+          purchasedCourses.map((course) => (
             <div key={course._id} className="course-card">
               <h3>{course.course.title}</h3> {/* Access course details */}
               <p><strong>Description:</strong> {course.course.description}</p>
@@ -39,16 +43,32 @@ const MyDashboard = () => {
               <p><strong>Purchased on:</strong> {new Date(course.purchaseDate).toLocaleDateString()}</p>
               <p><strong>Expiry Date:</strong> {new Date(course.expiryDate).toLocaleDateString()}</p>
 
-              {/* Display video links */}
+              {/* Display video links only if the course has videos */}
               {Array.isArray(course.course.links) && course.course.links.length > 0 && (
                 <div className="course-links">
                   <strong>Course Videos:</strong>
                   <ul>
                     {course.course.links.map((link, index) => (
                       <li key={index}>
-                        <a href={link} target="_blank" rel="noopener noreferrer">
-                          Watch Video {index + 1}
-                        </a>
+                        <div className="video-container" onContextMenu={disableRightClick}>
+                          <div className="overlay"></div>
+                          <iframe
+                            title={`Video ${index + 1}`}
+                            src={`${link}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`}
+                            frameBorder="0"
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              width: "100%",
+                              height: "100%",
+                              pointerEvents:"none"
+                            }}
+                          />
+                        </div>
+                        <p>Watch Video {index + 1}</p>
                       </li>
                     ))}
                   </ul>
