@@ -61,13 +61,21 @@ const CourseDetails = () => {
               <div className="video-container" onContextMenu={disableRightClick}>
                 <div className="overlay"></div>
                 <iframe
-                  src={`${link}?modestbranding=1&rel=0&controls=1&disablekb=1&showinfo=0`}
-                  frameBorder="0"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  title={`Video ${index + 1}`}
-                ></iframe>
-                <video src={`${link}?modestbranding=1&rel=0&controls=1&disablekb=1&showinfo=0`}></video>
+        title="YouTube Video"
+        src={`https://www.youtube.com/embed/kqHax3cp0rY?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`}
+        frameBorder="0"
+        allow="autoplay; encrypted-media"
+        allowFullScreen
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none", // Disable user interactions
+        }}
+      />
+
               </div>
               <p>Video {index + 1}</p>
             </li>
