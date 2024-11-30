@@ -17,7 +17,7 @@ const Signup = () => {
     city: "",
     state: "",
   });
-  const {isAuthenticated} = useContext(AuthContext);
+  const {isAuthenticated,url} = useContext(AuthContext);
   const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
+        `${url}/api/auth/signup`,
         formData
       );
 

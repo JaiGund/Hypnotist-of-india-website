@@ -10,7 +10,7 @@ const SignIn = () => {
     email: "",
     password: "",
   });
-  const {isAuthenticated} = useContext(AuthContext);
+  const {isAuthenticated,url} = useContext(AuthContext);
   const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/signin",
+        `${url}/api/auth/signin`,
         formData,
         { withCredentials: true }
       );

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './MyDashboard.css';
+import { AuthContext } from '../../context/AuthContext';
 
 const MyDashboard = () => {
   const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [error, setError] = useState(null);
+  const {url} = useContext(AuthContext);
 
   useEffect(() => {
     const fetchPurchasedCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/mycourses', { withCredentials: true });
+        const response = await axios.get(`${url}/api/mycourses`, { withCredentials: true });
         setPurchasedCourses(response.data);
       } catch (err) {
         setError(err.response ? err.response.data.message : 'An error occurred');
