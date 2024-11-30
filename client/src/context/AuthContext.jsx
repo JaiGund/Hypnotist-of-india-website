@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const url = 'https://meditation-of-india-backend.onrender.com'
+  const url = 'http://localhost:5000'
 
   const checkStatus = async () => {
     try {
