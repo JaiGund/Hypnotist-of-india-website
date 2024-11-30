@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
 
   const checkStatus = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/auth/validate-token", {
+      const response = await axios.get(`${url}/api/auth/validate-token`, {
         withCredentials: true,
       });
       setIsAuthenticated(response.data.isAuthenticated);
@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+      await axios.post(`${url}/api/auth/logout`, {}, { withCredentials: true });
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Logout failed:", error);
