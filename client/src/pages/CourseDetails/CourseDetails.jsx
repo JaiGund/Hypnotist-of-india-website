@@ -8,7 +8,7 @@ const CourseDetails = () => {
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
   const [error, setError] = useState(null);
-  const {url} = useContext(AuthContext);
+  const { url } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -23,9 +23,69 @@ const CourseDetails = () => {
     fetchCourseDetails();
   }, [courseId]);
 
-  const handleBuyCourse = () => {
-    // Add purchase logic here (e.g., making an API call to buy the course)
-    alert('Course Purchased');
+  const handlePurchase = async (courseId) => {
+    try {
+      // Step 1: Request payment order from backend
+      const { data } = await axios.post(
+        `${url}/api/payment/order`,
+        { courseId },
+        { withCredentials: true } // Include cookies for authentication
+      );
+
+      // Step 2: Load Razorpay script
+      const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
+
+      const isRazorpayLoaded = await loadRazorpayScript();
+
+      if (!isRazorpayLoaded) {
+        console.error('Razorpay SDK failed to load.');
+        return;
+      }
+
+      // Step 3: Initialize Razorpay
+      const options = {
+        key: data.razorpayKey, // Razorpay key from backend
+        amount: data.amount, // Amount in paisa
+        currency: data.currency, // INR by default
+        name: 'Your Website Name',
+        description: course.title,
+        order_id: data.orderId, // Razorpay order ID
+        handler: async (response) => {
+          try {
+            // Step 4: Verify the payment on backend
+            const verifyResponse = await axios.post(
+              `${url}/api/payment/verify`,
+              {
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                signature: response.razorpay_signature,
+                courseId,
+              },
+              { withCredentials: true }
+            );
+            console.log(verifyResponse.data.message);
+          } catch (err) {
+            console.error('Error verifying payment:', err);
+          }
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error('Error during purchase:', err);
+    }
   };
 
   if (error) {
@@ -52,7 +112,7 @@ const CourseDetails = () => {
       </div>
 
       <div className="button-container">
-        <button className="buy-button" onClick={handleBuyCourse}>Buy Course</button>
+        <button onClick={() => handlePurchase(course._id)}>Buy Course</button>
       </div>
     </div>
   );

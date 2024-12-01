@@ -8,6 +8,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import courseRoutes from './routes/courseRoutes.js';
 import purchaseRoutes from './routes/purchaseRoutes.js';
+import paymentRoutes from './routes/paymentRoute.js'
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api', purchaseRoutes);
+app.use('/api/payment',paymentRoutes)
 
 // Start the server
 const PORT = process.env.PORT || 5000;
