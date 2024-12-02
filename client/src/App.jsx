@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MyDashboard from './pages/MyDashBoard/MyDashboard'
 import CourseDetails from './pages/CourseDetails/CourseDetails'
+import CourseVideos from './pages/CourseVideos/CourseVideos'
 
 
 const App = () => {
@@ -24,6 +25,8 @@ const App = () => {
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/mydashboard' element={<MyDashboard/>} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
+        <Route path="/course-videos/:courseId" element={<CourseVideos />} />
+
       </Routes>
       <ToastContainer />
     </div>

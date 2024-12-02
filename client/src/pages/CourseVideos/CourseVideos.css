@@ -1,0 +1,115 @@
+/* Container for the entire course videos page */
+.course-videos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background-color: #f4f7fb;
+  min-height: 100vh;
+  margin-top: 72px;
+}
+
+/* Title styling */
+.course-videos-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Error message styling */
+.error-message {
+  color: #e74c3c;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* List styling for video links */
+ul {
+  list-style: none;
+  padding: 0;
+  width: 80%;
+  margin-top: 20px;
+}
+
+/* Each list item (video) styling */
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+li:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for the YouTube player container */
+.video-player {
+  position: relative;
+  width: 100%;
+  /* padding-bottom: 56.25%;  */
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  pointer-events: none;
+}
+
+.video-player iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+/* Video controls styling */
+.video-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.video-controls button {
+  background-color: #3498db;
+  color: #fff;
+  font-size: 1rem;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.video-controls button:hover {
+  background-color: #2980b9;
+}
+
+/* Styling for the "No videos" message */
+.course-videos-container p {
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 20px;
+}
+
+/* Loading message styling */
+.loading-message {
+  font-size: 1.5rem;
+  color: #3498db;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 50px;
+}
