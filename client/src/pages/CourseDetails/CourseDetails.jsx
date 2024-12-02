@@ -55,7 +55,7 @@ const CourseDetails = () => {
         key: data.razorpayKey, // Razorpay key from backend
         amount: data.amount, // Amount in paisa
         currency: data.currency, // INR by default
-        name: 'Your Website Name',
+        name: 'Meditation Of India',
         description: course.title,
         order_id: data.orderId, // Razorpay order ID
         handler: async (response) => {

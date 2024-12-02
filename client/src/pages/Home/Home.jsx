@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
+import YouTubeEmbed from '../../components/YouTubeEmbed/YoutubeEmbed';
 
 const Home = () => {
 
