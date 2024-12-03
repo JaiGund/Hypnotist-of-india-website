@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './BookApointment.css';
 
 const BookAppointment = () => {
@@ -8,10 +9,12 @@ const BookAppointment = () => {
     contact: '',
     date: '',
     time: '',
+    sessionType: '',
     concerns: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,11 +24,17 @@ const BookAppointment = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    console.log('Form Submitted:', formData);
-    // Add API call or backend integration here
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/appointments', formData);
+      console.log('Response:', response.data);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.response?.data?.message || 'An error occurred while booking your appointment.');
+      console.error('Error:', err);
+    }
   };
 
   return (
@@ -96,6 +105,24 @@ const BookAppointment = () => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="sessionType">Session Type</label>
+            <select
+              id="sessionType"
+              name="sessionType"
+              value={formData.sessionType}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+              <option value="meditation">Meditation</option>
+              <option value="hypnosis">Hypnosis</option>
+              <option value="counseling">Counseling</option>
+            </select>
+          </div>
+
+          <div className="form-group">
             <label htmlFor="concerns">Specific Concerns (Optional)</label>
             <textarea
               id="concerns"
@@ -106,7 +133,11 @@ const BookAppointment = () => {
             ></textarea>
           </div>
 
-          <button type="submit" className="submit-button">Book Appointment</button>
+          <button type="submit" className="submit-button">
+            Book Appointment
+          </button>
+
+          {error && <p className="error-message">{error}</p>}
         </form>
       ) : (
         <div className="thank-you">
