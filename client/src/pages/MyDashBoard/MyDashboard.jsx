@@ -39,7 +39,7 @@ const MyDashboard = () => {
             <div key={course._id} className="course-card">
               <h3>{course.course.title}</h3> {/* Access course details */}
               <p><strong>Description:</strong> {course.course.description}</p>
-              <p><strong>Price:</strong> ${course.course.price}</p>
+              <p><strong>Price:</strong> ₹{course.course.price}</p>
               <p><strong>Level:</strong> {course.course.level}</p>
               <p><strong>Duration:</strong> {course.course.duration} hours</p>
               <p><strong>Purchased on:</strong> {new Date(course.purchaseDate).toLocaleDateString()}</p>

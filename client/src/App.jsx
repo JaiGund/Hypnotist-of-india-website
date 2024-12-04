@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import MyDashboard from './pages/MyDashBoard/MyDashboard'
 import CourseDetails from './pages/CourseDetails/CourseDetails'
 import CourseVideos from './pages/CourseVideos/CourseVideos'
+import AdminPanel from './pages/AdminPanel/AdminPanel'
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/mydashboard' element={<MyDashboard/>} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/course-videos/:courseId" element={<CourseVideos />} />
+        <Route path="/adminpanel" element={<AdminPanel />} />
 
       </Routes>
       <ToastContainer />

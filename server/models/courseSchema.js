@@ -19,7 +19,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [
-      'Med'
+      'Meditation','Hypnosis'
     ],
   },
   duration: {

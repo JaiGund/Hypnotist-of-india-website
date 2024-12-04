@@ -9,6 +9,7 @@ const AppointmentSchema = new mongoose.Schema({
   sessionType: { type: String, enum: ['meditation', 'hypnosis', 'counseling'], required: true },
   concerns: { type: String },
   createdAt: { type: Date, default: Date.now },
+  read: { type: Boolean, default: false },
 });
 
 const Appointment = mongoose.model('Appointment', AppointmentSchema);
