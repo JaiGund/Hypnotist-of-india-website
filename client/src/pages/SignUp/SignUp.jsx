@@ -17,12 +17,12 @@ const Signup = () => {
     city: "",
     state: "",
   });
-  const {isAuthenticated,url} = useContext(AuthContext);
+  const { isAuthenticated, url } = useContext(AuthContext);
   const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/"); // Redirect to home if authenticated
     }
   }, [isAuthenticated, navigate]);
 
@@ -56,6 +56,10 @@ const Signup = () => {
       // Show error toast
       toast.error(error.response?.data?.msg || "Something went wrong");
     }
+  };
+
+  const handleSignInRedirect = () => {
+    navigate("/sign-in"); // Redirect to Sign-In page
   };
 
   return (
@@ -155,6 +159,10 @@ const Signup = () => {
           Sign Up
         </button>
       </form>
+
+      <div className="signin-link">
+        <p>Already have an account? <span onClick={handleSignInRedirect} className="link">Sign In</span></p>
+      </div>
     </div>
   );
 };

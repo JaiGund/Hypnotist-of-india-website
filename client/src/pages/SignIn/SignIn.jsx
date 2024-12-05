@@ -10,12 +10,12 @@ const SignIn = () => {
     email: "",
     password: "",
   });
-  const {isAuthenticated,url} = useContext(AuthContext);
+  const { isAuthenticated, url } = useContext(AuthContext);
   const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/"); // Redirect to home if authenticated
     }
   }, [isAuthenticated, navigate]);
 
@@ -33,14 +33,16 @@ const SignIn = () => {
       );
 
       toast.success("Signed in successfully!"); // Show success toast
-      
       setFormData({ email: "", password: "" }); // Clear the form
-      
-      navigate("/"); // Redirect to the homepage
+      navigate("/"); // Redirect to homepage
     } catch (error) {
       toast.error(error.response?.data?.msg || "Invalid credentials"); // Show error toast
       console.error(error);
     }
+  };
+
+  const handleSignUpRedirect = () => {
+    navigate("/sign-up"); // Redirect to Sign-Up page
   };
 
   return (
@@ -71,6 +73,9 @@ const SignIn = () => {
         </div>
         <button type="submit" className="submit-btn">Sign In</button>
       </form>
+      <div className="signup-link">
+        <p>Don't have an account? <span onClick={handleSignUpRedirect} className="link">Sign Up</span></p>
+      </div>
     </div>
   );
 };

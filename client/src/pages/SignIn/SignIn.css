@@ -48,3 +48,18 @@ h2 {
 .submit-btn:hover {
   background-color: #0056b3;
 }
+
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signup-link .link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.signup-link .link:hover {
+  color: #0056b3;
+}

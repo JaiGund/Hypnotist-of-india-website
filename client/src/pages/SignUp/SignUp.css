@@ -77,6 +77,21 @@ body {
   background-color: #2e59d9;
 }
 
+.signin-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signin-link .link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.signin-link .link:hover {
+  color: #0056b3;
+}
+
 /* Styling for error messages */
 .error-message {
   background-color: #f8d7da;
