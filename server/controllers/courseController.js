@@ -34,3 +34,29 @@ export const getAllCourses = async (req, res) => {
   }
 };
 
+export const updateCourse = async (req, res) => {
+  try {
+    const course = await Course.findByIdAndUpdate(req.params.courseId, req.body, {
+      new: true,
+    });
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    res.status(200).json({ message: 'Course updated successfully', course });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating course', error: error.message });
+  }
+};
+
+// Delete a course by ID
+export const deleteCourse = async (req, res) => {
+  try {
+    const course = await Course.findByIdAndDelete(req.params.courseId);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    res.status(200).json({ message: 'Course deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting course', error: error.message });
+  }
+};

@@ -1,6 +1,6 @@
 // routes/courseRoutes.js
 import express from 'express';
-import { addCourse, getAllCourses } from '../controllers/courseController.js';
+import { addCourse, deleteCourse, getAllCourses, updateCourse } from '../controllers/courseController.js';
 import Course from '../models/courseSchema.js';
 
 const router = express.Router();
@@ -18,6 +18,11 @@ router.get('/:courseId', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+// Update a course by ID
+router.put('/:courseId', updateCourse);
+
+// Delete a course by ID
+router.delete('/:courseId', deleteCourse);
 
 
 export default router;

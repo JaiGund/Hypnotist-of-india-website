@@ -5,6 +5,7 @@ import "./AdminPanel.css";
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("addCourse"); // Manage active tab
   const [appointments, setAppointments] = useState([]);
+  const [courses, setCourses] = useState([]); // For viewing/editing courses
   const [courseForm, setCourseForm] = useState({
     title: "",
     description: "",
@@ -15,45 +16,49 @@ const AdminPanel = () => {
     studentsEnrolled: 0,
     thumbnail: "",
     links: [""],
-    learningPoints: [""], // Learning points as an array
+    learningPoints: [""],
   });
+
+  const [editCourseId, setEditCourseId] = useState(null); // For editing courses
 
   // Fetch appointments
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/appointments"
-      );
+      const response = await axios.get("http://localhost:5000/api/appointments");
       setAppointments(response.data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
   };
 
-  // Mark as read
+  // Fetch courses
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/courses");
+      setCourses(response.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+  // Mark appointment as read
   const markAsRead = async (id, currentStatus) => {
     try {
-      // Toggle the read status
       const newStatus = !currentStatus;
-
-      // Send the updated status to the backend
       await axios.patch(`http://localhost:5000/api/${id}/read`, { read: newStatus });
-
-      // Update the local state with the new status
       setAppointments((prev) =>
         prev.map((appointment) =>
           appointment._id === id ? { ...appointment, read: newStatus } : appointment
         )
       );
     } catch (error) {
-      console.error('Error marking appointment as read:', error);
+      console.error("Error marking appointment as read:", error);
     }
   };
 
   // Handle course input changes
   const handleInputChange = (e, index, field) => {
     const { name, value } = e.target;
-
     if (field === "links") {
       const updatedLinks = [...courseForm.links];
       updatedLinks[index] = value;
@@ -67,11 +72,10 @@ const AdminPanel = () => {
     }
   };
 
-  // Add additional fields
+  // Add fields
   const addLinkField = () => {
     setCourseForm({ ...courseForm, links: [...courseForm.links, ""] });
   };
-
   const addLearningPointField = () => {
     setCourseForm({
       ...courseForm,
@@ -79,33 +83,67 @@ const AdminPanel = () => {
     });
   };
 
-  // Submit course form
+  // Add or Edit course submission
   const handleCourseSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/courses/add", courseForm);
-      alert("Course added successfully!");
-      setCourseForm({
-        title: "",
-        description: "",
-        price: "",
-        category: "",
-        duration: "",
-        level: "",
-        studentsEnrolled: 0,
-        thumbnail: "",
-        links: [""],
-        learningPoints: [""], // Reset learning points array
-      });
+      if (editCourseId) {
+        // Edit course
+        await axios.put(`http://localhost:5000/api/courses/${editCourseId}`, courseForm);
+        alert("Course updated successfully!");
+      } else {
+        // Add course
+        await axios.post("http://localhost:5000/api/courses/add", courseForm);
+        alert("Course added successfully!");
+      }
+      fetchCourses();
+      resetCourseForm();
     } catch (error) {
-      console.error("Error adding course:", error);
-      alert("Failed to add course. Please try again.");
+      console.error("Error adding/editing course:", error);
+      alert("Failed to submit course. Please try again.");
     }
   };
 
-  // Initialize appointments data
+  // Edit course handler
+  const handleEditCourse = (course) => {
+    setEditCourseId(course._id);
+    setCourseForm(course);
+    setActiveTab("addCourse");
+  };
+
+  // Delete course handler
+  const handleDeleteCourse = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/courses/${id}`);
+      alert("Course deleted successfully!");
+      fetchCourses();
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      alert("Failed to delete course.");
+    }
+  };
+
+  // Reset form
+  const resetCourseForm = () => {
+    setCourseForm({
+      title: "",
+      description: "",
+      price: "",
+      category: "",
+      duration: "",
+      level: "",
+      studentsEnrolled: 0,
+      thumbnail: "",
+      links: [""],
+      learningPoints: [""],
+    });
+    setEditCourseId(null);
+  };
+
+  // Initialize data
   useEffect(() => {
     fetchAppointments();
+    fetchCourses();
   }, []);
 
   return (
@@ -116,9 +154,12 @@ const AdminPanel = () => {
       <div className="tab-navigation">
         <button
           className={activeTab === "addCourse" ? "active-tab" : ""}
-          onClick={() => setActiveTab("addCourse")}
+          onClick={() => {
+            setActiveTab("addCourse");
+            resetCourseForm();
+          }}
         >
-          Add Course
+          {editCourseId ? "Edit Course" : "Add Course"}
         </button>
         <button
           className={activeTab === "viewAppointments" ? "active-tab" : ""}
@@ -126,28 +167,34 @@ const AdminPanel = () => {
         >
           View Appointments
         </button>
+        <button
+          className={activeTab === "viewCourses" ? "active-tab" : ""}
+          onClick={() => setActiveTab("viewCourses")}
+        >
+          View Courses
+        </button>
       </div>
 
       {/* Tab Content */}
       <div className="tab-content">
-        {/* Add Course Tab */}
         {activeTab === "addCourse" && (
           <div className="add-course">
-            <h2>Add a New Course</h2>
+            <h2>{editCourseId ? "Edit Course" : "Add a New Course"}</h2>
             <form onSubmit={handleCourseSubmit}>
+              {/* Course Form */}
               <input
                 type="text"
                 name="title"
                 placeholder="Course Title"
                 value={courseForm.title}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
               />
               <textarea
                 name="description"
                 placeholder="Course Description"
                 value={courseForm.description}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
               ></textarea>
               <input
@@ -155,7 +202,7 @@ const AdminPanel = () => {
                 name="price"
                 placeholder="Price"
                 value={courseForm.price}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
               />
               <input
@@ -163,7 +210,7 @@ const AdminPanel = () => {
                 name="category"
                 placeholder="Category"
                 value={courseForm.category}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
               />
               <input
@@ -171,39 +218,31 @@ const AdminPanel = () => {
                 name="duration"
                 placeholder="Duration"
                 value={courseForm.duration}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
               />
               <input
                 type="text"
                 name="level"
-                placeholder="Level (Beginner, Intermediate, Advanced)"
+                placeholder="Level"
                 value={courseForm.level}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
-              />
-              <input
-                type="number"
-                name="studentsEnrolled"
-                placeholder="Students Enrolled"
-                value={courseForm.studentsEnrolled}
-                onChange={(e) => handleInputChange(e)}
               />
               <input
                 type="text"
                 name="thumbnail"
                 placeholder="Thumbnail URL"
                 value={courseForm.thumbnail}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 required
               />
 
-              {/* Video Links */}
+              {/* Links */}
               {courseForm.links.map((link, index) => (
                 <input
                   key={index}
                   type="text"
-                  name="links"
                   placeholder={`Video Link ${index + 1}`}
                   value={link}
                   onChange={(e) => handleInputChange(e, index, "links")}
@@ -218,32 +257,25 @@ const AdminPanel = () => {
                 <input
                   key={index}
                   type="text"
-                  name="learningPoints"
                   placeholder={`Learning Point ${index + 1}`}
                   value={point}
-                  onChange={(e) =>
-                    handleInputChange(e, index, "learningPoints")
-                  }
+                  onChange={(e) => handleInputChange(e, index, "learningPoints")}
                 />
               ))}
               <button type="button" onClick={addLearningPointField}>
                 Add Another Learning Point
               </button>
 
-              <button type="submit">Add Course</button>
+              <button type="submit">{editCourseId ? "Update Course" : "Add Course"}</button>
             </form>
           </div>
         )}
 
-        {/* View Appointments Tab */}
         {activeTab === "viewAppointments" && (
           <div className="view-appointments">
             <h2>View Appointments</h2>
             {appointments.map((appointment, index) => (
-              <div
-                key={index}
-                className={`appointment ${appointment.read ? "read" : ""}`}
-              >
+              <div key={index} className={`appointment ${appointment.read ? "read" : ""}`}>
                 <h3>{appointment.name}</h3>
                 <p>Email: {appointment.email}</p>
                 <p>Contact: {appointment.contact}</p>
@@ -262,6 +294,44 @@ const AdminPanel = () => {
               </div>
             ))}
           </div>
+        )}
+
+        {activeTab === "viewCourses" && (
+          <div className="view-courses">
+          <h2>View Courses</h2>
+          <div className="course-list">
+            {courses.map((course) => (
+              <div key={course._id} className="course-card">
+                <div
+                  className="course-thumbnail"
+                  style={{
+                    backgroundImage: `url(${course.thumbnail || 'default-thumbnail.jpg'})`,
+                  }}
+                ></div>
+                <h3>{course.title}</h3>
+                <p>{course.description}</p>
+                <p><strong>Price:</strong> ₹{course.price}</p>
+                <p><strong>Category:</strong> {course.category}</p>
+                <p><strong>Duration:</strong> {course.duration} hours</p>
+                <div className="actions">
+                  <button
+                    className="edit-button"
+                    onClick={() => handleEditCourse(course)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteCourse(course._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
         )}
       </div>
     </div>
