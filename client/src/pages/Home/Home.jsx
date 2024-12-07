@@ -8,10 +8,10 @@ const Home = () => {
     <div className="home">
       {/* Hero Section */}
       <div className="hero-section">
-        <h1>Welcome to Hypnotist of India</h1>
+        <h1>Welcome to Meditation of India</h1>
         <p>Unlock the power of your subconscious mind to achieve your goals and live a healthier, happier life.</p>
         <Link to={'/bookapointment'}><button className="cta-button">Book an Appointment</button></Link>
-      </div>
+      </div>  
 
       {/* Courses Section */}
       <div className="courses-section">

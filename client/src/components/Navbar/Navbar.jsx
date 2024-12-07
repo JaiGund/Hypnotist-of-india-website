@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import "./Navbar.css";
@@ -29,7 +29,9 @@ const Navbar = () => {
       </div>
       <div className="sign-in">
         {isAuthenticated ? (
-          <button className="logout-btn" onClick={logout}>Logout</button>
+          <button className="logout-btn" onClick={logout}>
+            Logout
+          </button>
         ) : (
           <Link to={"/sign-in"}>
             <button>Sign In</button>

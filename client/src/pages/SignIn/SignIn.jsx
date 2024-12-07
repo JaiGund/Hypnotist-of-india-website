@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; // Import for navigation
+import { useNavigate } from "react-router-dom";
 import "./SignIn.css";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -10,8 +10,8 @@ const SignIn = () => {
     email: "",
     password: "",
   });
-  const { isAuthenticated, url } = useContext(AuthContext);
-  const navigate = useNavigate(); // Initialize navigation
+  const { isAuthenticated, setIsAuthenticated, url } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -32,17 +32,18 @@ const SignIn = () => {
         { withCredentials: true }
       );
 
-      toast.success("Signed in successfully!"); // Show success toast
-      setFormData({ email: "", password: "" }); // Clear the form
-      navigate("/"); // Redirect to homepage
+      toast.success("Signed in successfully!");
+      setFormData({ email: "", password: "" });
+      setIsAuthenticated(true); // Update context state
+      navigate("/");
     } catch (error) {
-      toast.error(error.response?.data?.msg || "Invalid credentials"); // Show error toast
+      toast.error(error.response?.data?.msg || "Invalid credentials");
       console.error(error);
     }
   };
 
   const handleSignUpRedirect = () => {
-    navigate("/sign-up"); // Redirect to Sign-Up page
+    navigate("/sign-up");
   };
 
   return (
@@ -74,7 +75,10 @@ const SignIn = () => {
         <button type="submit" className="submit-btn">Sign In</button>
       </form>
       <div className="signup-link">
-        <p>Don't have an account? <span onClick={handleSignUpRedirect} className="link">Sign Up</span></p>
+        <p>
+          Don't have an account?{" "}
+          <span onClick={handleSignUpRedirect} className="link">Sign Up</span>
+        </p>
       </div>
     </div>
   );
