@@ -28,10 +28,6 @@ const logout = (req, res) => {
   res.status(200).json({ msg: 'Logged out successfully' });
 };
 
-export { validateToken, logout };
-
-
-
 const signUp = async (req, res) => {
   try {
     const { firstName, middleName, lastName, contactNumber, email, password, city, state } = req.body;
@@ -140,4 +136,17 @@ const signIn = async (req, res) => {
   }
 };
 
-export { signUp, signIn };
+const getUser = async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { signUp, signIn,getUser,validateToken,logout };

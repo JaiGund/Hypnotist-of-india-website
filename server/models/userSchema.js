@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -9,31 +9,31 @@ const userSchema = new mongoose.Schema({
   contactNumber: { type: Number, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },
+  role: { type: String, default: "user" }, // Add role with default as 'user'
   boughtCourses: [
     {
       course: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course', // Reference to Course schema
+        ref: "Course",
         required: true,
       },
-      purchaseDate: { type: Date, default: Date.now }, // Server time for purchase date
-      expiryDate: { type: Date }, // Expiry date calculated from server time
+      purchaseDate: { type: Date, default: Date.now },
+      expiryDate: { type: Date },
     },
   ],
 });
 
-// Pre-save hook to calculate expiryDate using server's time
-userSchema.pre('save', function (next) {
+// Calculate expiry date for bought courses
+userSchema.pre("save", function (next) {
   this.boughtCourses.forEach((boughtCourse) => {
     if (!boughtCourse.expiryDate) {
-      const serverTime = new Date(Date.now()); // Get server's current time
       boughtCourse.expiryDate = new Date(
-        serverTime.getTime() + 365 * 24 * 60 * 60 * 1000 // Adds 1 year
+        Date.now() + 365 * 24 * 60 * 60 * 1000
       );
     }
   });
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 export default User;

@@ -35,7 +35,7 @@ const Signup = () => {
     try {
       const response = await axios.post(
         `${url}/api/auth/signup`,
-        formData
+        formData,{ withCredentials: true }
       );
 
       // Show success toast

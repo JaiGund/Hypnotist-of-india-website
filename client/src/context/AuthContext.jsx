@@ -6,16 +6,26 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const url = 'http://localhost:5000'
+  const [user, setUser] = useState(null);
+  const url = "http://localhost:5000";
 
   const checkStatus = async () => {
     try {
       const response = await axios.get(`${url}/api/auth/validate-token`, {
         withCredentials: true,
       });
+
+      if (response.data.isAuthenticated) {
+        const userResponse = await axios.get(`${url}/api/auth/get-user`, {
+          withCredentials: true,
+        });
+        setUser(userResponse.data.user);
+      }
+
       setIsAuthenticated(response.data.isAuthenticated);
     } catch (error) {
       setIsAuthenticated(false);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -29,13 +39,14 @@ const AuthProvider = ({ children }) => {
     try {
       await axios.post(`${url}/api/auth/logout`, {}, { withCredentials: true });
       setIsAuthenticated(false);
+      setUser(null);
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, loading, logout,url }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, loading, logout, url }}>
       {children}
     </AuthContext.Provider>
   );
