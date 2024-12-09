@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './BookApointment.css';
+import { AuthContext } from '../../context/AuthContext';
 
 const BookAppointment = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const BookAppointment = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const {url} = useState(AuthContext)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +30,7 @@ const BookAppointment = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/appointments', formData);
+      const response = await axios.post(`${url}/api/appointments`, formData);
       console.log('Response:', response.data);
       setSubmitted(true);
     } catch (err) {

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "./AdminPanel.css";
+import { AuthContext } from "../../context/AuthContext";
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("addCourse"); // Manage active tab
@@ -18,13 +19,14 @@ const AdminPanel = () => {
     links: [""],
     learningPoints: [""],
   });
+  const {url} = useContext(AuthContext);
 
   const [editCourseId, setEditCourseId] = useState(null); // For editing courses
 
   // Fetch appointments
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/appointments");
+      const response = await axios.get(`${url}/api/appointments`);
       setAppointments(response.data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -34,7 +36,7 @@ const AdminPanel = () => {
   // Fetch courses
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/courses");
+      const response = await axios.get(`${url}/api/courses`);
       setCourses(response.data);
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -45,7 +47,7 @@ const AdminPanel = () => {
   const markAsRead = async (id, currentStatus) => {
     try {
       const newStatus = !currentStatus;
-      await axios.patch(`http://localhost:5000/api/${id}/read`, { read: newStatus });
+      await axios.patch(`${url}/api/${id}/read`, { read: newStatus });
       setAppointments((prev) =>
         prev.map((appointment) =>
           appointment._id === id ? { ...appointment, read: newStatus } : appointment
@@ -89,11 +91,11 @@ const AdminPanel = () => {
     try {
       if (editCourseId) {
         // Edit course
-        await axios.put(`http://localhost:5000/api/courses/${editCourseId}`, courseForm);
+        await axios.put(`${url}/api/courses/${editCourseId}`, courseForm);
         alert("Course updated successfully!");
       } else {
         // Add course
-        await axios.post("http://localhost:5000/api/courses/add", courseForm);
+        await axios.post(`${url}/api/courses/add`, courseForm);
         alert("Course added successfully!");
       }
       fetchCourses();
@@ -114,7 +116,7 @@ const AdminPanel = () => {
   // Delete course handler
   const handleDeleteCourse = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/courses/${id}`);
+      await axios.delete(`${url}/api/courses/${id}`);
       alert("Course deleted successfully!");
       fetchCourses();
     } catch (error) {
