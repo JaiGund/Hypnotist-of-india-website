@@ -1,131 +1,128 @@
 /* General styles for the Navbar container */
 .navbar {
-  position: fixed; /* Makes the navbar fixed at the top */
-  top: 0; /* Stick it to the top */
-  width: 95%; /* Full width */
+  position: fixed;
+  top: 0;
+  width: 95%;
   z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: #343a40; /* Dark background color for a professional look */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow for depth */
-  font-family: 'Arial', sans-serif;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  font-family: 'Montserrat', sans-serif;
 }
 
-.left-side .route-links{
+/* Styling for the left-side with logo */
+.left-side .main-heading {
   text-decoration: none;
 }
 
-/* Styling for the right-side with the title */
-.right-side h2 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #f8f9fa; /* Light color for contrast on dark background */
+.left-side h2 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #333;
   margin: 0;
-  text-transform: uppercase; /* For a more professional feel */
-  letter-spacing: 1px; /* Slight spacing for the text */
+  letter-spacing: 1px;
+  text-transform: lowercase;
 }
 
-/* Styling for the main heading */
-.right-side .main-heading {
-  text-decoration: none; /* Dotted underline with a blue color */
-  padding-bottom: 5px;
-}
-
-/* Styling for the left-side navigation links */
-.left-side {
+/* Styling for the center navigation links */
+.center-nav {
   display: flex;
-  gap: 30px; /* Increased space between the links */
+  gap: 30px;
 }
 
-.left-side p {
+.center-nav .route-links {
+  text-decoration: none;
+}
+
+.center-nav p {
   margin: 0;
-  font-size: 1.1rem;
-  color: #e1e1e1; /* Lighter gray color for contrast */
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #555;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
-  padding: 5px 10px;
-  border-radius: 4px; /* Add rounded corners to the links */
+  transition: color 0.3s ease;
+  letter-spacing: 1px;
 }
 
-.left-side p:hover {
-  color: #007bff; /* Blue on hover for interaction feedback */
-  background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
-  transform: translateY(-2px); /* Slight upward movement on hover */
+.center-nav p:hover {
+  color: #4a7c59;
 }
 
-/* Styling for the sign-in button */
-.sign-in button {
-  background-color: #007bff; /* Primary blue color */
-  color: #fff; /* White text */
+/* Styling for the right-side buttons */
+.right-side .sign-in-btn {
+  background-color: transparent;
+  color: #333;
   border: none;
-  border-radius: 30px; /* Fully rounded button */
-  padding: 12px 30px;
-  font-size: 1.1rem;
-  font-weight: bold; /* Bolder text for emphasis */
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2); /* Soft glow effect */
+  transition: color 0.3s ease;
+  letter-spacing: 0.5px;
 }
 
-.sign-in button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: translateY(-2px); /* Slight upward movement */
-  box-shadow: 0 5px 25px rgba(0, 123, 255, 0.3); /* Enhanced glow effect */
+.right-side .sign-in-btn:hover {
+  color: #4a7c59;
 }
 
-.sign-in .logout-btn{
-  background-color: rgb(209, 39, 39);
+.right-side .logout-btn {
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.sign-in .logout-btn:hover{
-  background-color: #aa1a1a;
+.right-side .logout-btn:hover {
+  background-color: #f5f5f5;
+  color: #4a7c59;
+  border-color: #4a7c59;
 }
-
 
 /* Responsive styles */
+@media (max-width: 1024px) {
+  .center-nav {
+    gap: 20px;
+  }
+}
+
 @media (max-width: 768px) {
-  /* Stack elements vertically for smaller screens */
   .navbar {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
+    padding: 15px 20px;
   }
-
-  .right-side h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-
+  
   .left-side {
-    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .center-nav {
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 15px;
+    margin-bottom: 15px;
   }
-
-  .left-side p {
-    font-size: 1rem;
-  }
-
-  .sign-in button {
-    width: 100%; /* Full-width button for smaller screens */
-    padding: 14px;
-    font-size: 1.1rem;
-    margin-top: 15px;
+  
+  .center-nav p {
+    padding: 5px 0;
   }
 }
 
 @media (max-width: 480px) {
-  /* Further adjustments for very small screens */
-  .right-side h2 {
-    font-size: 1.2rem;
+  .center-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
-
-  .left-side p {
-    font-size: 0.9rem;
-  }
-
-  .sign-in button {
-    font-size: 1rem;
+  
+  .left-side h2 {
+    font-size: 1.4rem;
   }
 }

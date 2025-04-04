@@ -8,33 +8,39 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <div className="right-side">
+      <div className="left-side">
         <Link to={"/"} className="main-heading">
           <h2>Meditation Center Of India</h2>
         </Link>
       </div>
-      <div className="left-side">
+      <div className="center-nav">
         <Link to={"/"} className="route-links">
-          <p>Home</p>
+          <p>HOME</p>
         </Link>
+        {/* <Link to={"/about"} className="route-links">
+          <p>ABOUT</p>
+        </Link> */}
         <Link to={"/courses"} className="route-links">
-          <p>Courses</p>
+          <p>COURSES</p>
         </Link>
         <Link to="/bookapointment" className="route-links">
-          <p>Book An Appointment</p>
+          <p>BOOK NOW</p>
         </Link>
         <Link to="/mydashboard" className="route-links">
-          <p>My Dashboard</p>
+          <p>DASHBOARD</p>
+        </Link>
+        <Link to="/contact" className="route-links">
+          <p>CONTACT</p>
         </Link>
       </div>
-      <div className="sign-in">
+      <div className="right-side">
         {isAuthenticated ? (
           <button className="logout-btn" onClick={logout}>
             Logout
           </button>
         ) : (
           <Link to={"/sign-in"}>
-            <button>Sign In</button>
+            <button className="sign-in-btn">Sign In</button>
           </Link>
         )}
       </div>
