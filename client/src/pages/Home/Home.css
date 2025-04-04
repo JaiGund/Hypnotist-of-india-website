@@ -1,73 +1,188 @@
 /* General styles */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Montserrat', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f7fa; /* Light background color for the body */
+  background-color: #f8f8f6; /* Light cream background color */
   color: #333; /* Dark text color for better readability */
 }
 
 /* Home Section */
 .home {
   text-align: center;
-  padding: 30px;
-  background-color: #ffffff; /* White background for the homepage */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  margin: 20px;
-  border-radius: 8px;
-  margin-top: 100px;
+  background-color: #f8f8f6; /* Light cream background */
 }
 
 /* Hero Section */
 .hero-section {
-  background-color: #007bff;
-  color: white;
-  padding: 80px 20px; /* Increased padding for a more spacious layout */
+  background-image: url('../../assets/nsplsh_267d189c3c324796a8818d9ea2164437~mv2.avif'); /* Replace with your actual lotus flower background */
+  background-size: cover;
+  background-position: center;
+  color: #4a5d4e; /* Muted green color for text */
+  padding: 120px 20px; /* Increased padding for a more spacious layout */
   text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-section:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.4); /* Soft white overlay */
+  z-index: 1;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+}
+
+.hero-text {
+  max-width: 500px;
+  text-align: left;
+  padding: 0 20px;
 }
 
 .hero-section h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 15px;
-  font-weight: bold; /* Bold for emphasis */
-  letter-spacing: 1px;
+  font-weight: 300; /* Light weight for elegant appearance */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #4a5d4e; /* Muted green color */
 }
 
 .hero-section p {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin-bottom: 30px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto; /* Center the paragraph */
+  font-weight: 300;
 }
 
 .hero-section .cta-button {
-  background-color: #0056b3;
+  background-color: #6b8e72; /* Muted green button */
   color: white;
-  padding: 15px 25px;
+  padding: 12px 30px;
   border: none;
-  border-radius: 30px; /* Fully rounded button */
-  font-size: 1.1rem;
+  border-radius: 0; /* Square button as in design */
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2); /* Soft glowing effect */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+  display: inline-block;
 }
 
 .hero-section .cta-button:hover {
-  background-color: #003f7f;
-  transform: translateY(-5px); /* Slight upward movement */
+  background-color: #526e59;
+}
+
+.hero-image {
+  width: 350px;
+  height: 350px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  margin-right: 20px;
+  border: 8px solid rgba(255, 255, 255, 0.8);
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Benefits Section */
+.benefits-section {
+  padding: 100px 20px;
+  text-align: center;
+  background-color: #f8f8f6;
+  position: relative;
+}
+
+.benefits-section:before {
+  content: "❈"; /* Decorative element as in design */
+  font-size: 2rem;
+  color: #6b8e72;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.benefits-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #4a5d4e;
+}
+
+.benefits-section p {
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+  color: #666;
+  font-weight: 300;
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: #6b8e72;
+  border: 1px solid #6b8e72;
+  padding: 10px 25px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+  background-color: #6b8e72;
+  color: white;
 }
 
 /* Courses Section */
 .courses-section {
-  padding: 60px 20px;
+  padding: 80px 20px;
   text-align: center;
+  background-color: #f8f8f6;
+  position: relative;
+}
+
+.courses-section:before {
+  content: "❈"; /* Decorative element as in design */
+  font-size: 2rem;
+  color: #6b8e72;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .courses-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 50px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #4a5d4e;
 }
 
 .courses-list {
@@ -75,127 +190,201 @@ body {
   justify-content: center;
   gap: 30px;
   flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .course-card {
   background-color: white;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* More defined shadow */
-  padding: 30px;
-  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   max-width: 320px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.yoga-image {
+  background-image: url('/path-to-yoga-image.jpg'); /* Replace with actual image */
+}
+
+.mindfulness-image {
+  background-image: url('/path-to-mindfulness-image.jpg'); /* Replace with actual image */
+}
+
+.movement-image {
+  background-image: url('/path-to-movement-image.jpg'); /* Replace with actual image */
 }
 
 .course-card h3 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.3rem;
+  padding: 20px 20px 10px;
+  color: #4a5d4e;
+  font-weight: 400;
+  margin: 0;
 }
 
 .course-card p {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
+  font-size: 0.9rem;
+  padding: 0 20px 20px;
   color: #666;
+  font-weight: 300;
+  margin: 0;
 }
 
 .course-card button {
-  background-color: #007bff;
-  color: white;
+  background-color: transparent;
+  color: #6b8e72;
   border: none;
-  padding: 12px 25px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.course-card button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-/* Benefits Section */
-.benefits-section {
-  padding: 60px 20px;
-  background-color: #f8f9fa; /* Light background */
-  text-align: center;
-}
-
-.benefits-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  font-weight: bold;
-}
-
-.benefits-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.benefits-section li {
-  font-size: 1.3rem;
-  margin: 15px 0;
-  color: #555;
-}
-
-/* Testimonials Section */
-.testimonials-section {
-  padding: 60px 20px;
-}
-
-.testimonials-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.testimonial {
-  font-size: 1.1rem;
-  color: #555;
+  padding: 10px 20px;
   margin-bottom: 20px;
-  line-height: 1.5;
-  text-align: center;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
 }
 
-.testimonial span {
-  display: block;
-  margin-top: 10px;
+/* Instructor Section */
+.instructor-section {
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #f8f8f6;
+}
+
+.instructor-section h2 {
+  font-size: 2rem;
+  margin-bottom: 50px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #4a5d4e;
+}
+
+.instructor-content {
+  display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.instructor-image {
+  width: 350px;
+  height: 350px;
+  background-image: url('/path-to-instructor-image.jpg'); /* Replace with actual image */
+  background-size: cover;
+  background-position: center;
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+
+.instructor-info {
+  max-width: 500px;
+  text-align: left;
+}
+
+.instructor-info h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: 300;
+  color: #4a5d4e;
+}
+
+.instructor-info p {
   font-size: 1rem;
-  color: #333;
-  font-style: italic;
+  margin-bottom: 30px;
+  line-height: 1.8;
+  color: #666;
+  font-weight: 300;
+}
+
+.instructor-info button {
+  background-color: transparent;
+  color: #6b8e72;
+  border: 1px solid #6b8e72;
+  padding: 10px 25px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.instructor-info button:hover {
+  background-color: #6b8e72;
+  color: white;
 }
 
 /* Footer Call-to-Action */
 .footer-cta {
-  background-color: #007bff;
+  background-color: #6b8e72;
   color: white;
-  padding: 40px 20px;
+  padding: 80px 20px;
   text-align: center;
 }
 
 .footer-cta h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 20px;
-  font-weight: bold;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.footer-cta p {
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-weight: 300;
 }
 
 .footer-cta button {
-  background-color: #0056b3;
+  background-color: transparent;
   color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 1.1rem;
+  padding: 12px 30px;
+  border: 1px solid white;
+  border-radius: 0;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: background-color 0.3s ease;
 }
 
 .footer-cta button:hover {
-  background-color: #003f7f;
-  transform: translateY(-5px);
+  background-color: white;
+  color: #6b8e72;
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-text {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .hero-image {
+    margin-right: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .courses-list {
     flex-direction: column;
@@ -204,33 +393,50 @@ body {
 
   .course-card {
     max-width: 90%;
-    padding: 20px;
+  }
+
+  .instructor-content {
+    flex-direction: column;
+  }
+
+  .instructor-image {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
+
+  .instructor-info {
+    text-align: center;
   }
 
   .hero-section h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
-  .hero-section p {
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+  .benefits-section h2,
+  .courses-section h2,
+  .instructor-section h2,
+  .footer-cta h2 {
+    font-size: 1.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero-section h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
-  .hero-section p {
-    font-size: 1rem;
+  .hero-section p,
+  .benefits-section p,
+  .footer-cta p {
+    font-size: 0.9rem;
   }
 
-  .footer-cta h2 {
-    font-size: 2rem;
+  .hero-image {
+    width: 300px;
+    height: 300px;
   }
 
-  .footer-cta button {
-    font-size: 1rem;
+  .course-card {
+    max-width: 100%;
   }
 }

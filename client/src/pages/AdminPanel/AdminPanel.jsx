@@ -98,7 +98,7 @@ const AdminPanel = () => {
         await axios.post(`${url}/api/courses/add`, courseForm);
         alert("Course added successfully!");
       }
-      fetchCourses();
+      fetchCourses(); 
       resetCourseForm();
     } catch (error) {
       console.error("Error adding/editing course:", error);

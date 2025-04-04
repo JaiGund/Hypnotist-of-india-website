@@ -62,7 +62,7 @@ const CourseVideos = () => {
     const player = playerRefs.current[videoIndex];
     if (player) player.playVideo();
   };
-
+  
   const pauseVideo = (videoIndex) => {
     const player = playerRefs.current[videoIndex];
     if (player) player.pauseVideo();

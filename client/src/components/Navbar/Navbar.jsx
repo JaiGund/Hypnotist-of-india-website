@@ -10,7 +10,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="right-side">
         <Link to={"/"} className="main-heading">
-          <h2>Meditation Of India</h2>
+          <h2>Meditation Center Of India</h2>
         </Link>
       </div>
       <div className="left-side">
