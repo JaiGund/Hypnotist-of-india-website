@@ -226,6 +226,27 @@ h2 {
   background: #a92330;
 }
 
+.home-videos-admin input {
+  margin: 5px;
+  padding: 8px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.home-videos-admin button {
+  background-color: #6b8e72;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.video-preview-list {
+  margin-top: 20px;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .tab-navigation {

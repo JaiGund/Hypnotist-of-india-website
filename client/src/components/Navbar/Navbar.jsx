@@ -6,7 +6,7 @@ import "./Navbar.css";
 const Navbar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
 
-  return (
+  return ( 
     <div className="navbar">
       <div className="left-side">
         <Link to={"/"} className="main-heading">

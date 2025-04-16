@@ -14,6 +14,7 @@ import CourseVideos from './pages/CourseVideos/CourseVideos'
 import AdminPanel from './pages/AdminPanel/AdminPanel'
 import OwnerRoute from './components/OwnerRoute/OwnerRoute'
 import { AuthContext } from './context/AuthContext'
+import WatchVideo from './pages/WatchVideo/WatchVideo'; // adjust path accordingly
 
 
 const App = () => {
@@ -46,6 +47,7 @@ const App = () => {
             </OwnerRoute>
           }
         />
+        <Route path="/watch/:videoId" element={<WatchVideo />} />
       </Routes>
       <ToastContainer />
     </div>

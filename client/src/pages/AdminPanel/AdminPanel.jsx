@@ -22,6 +22,9 @@ const AdminPanel = () => {
   const {url} = useContext(AuthContext);
 
   const [editCourseId, setEditCourseId] = useState(null); // For editing courses
+  const [homeVideos, setHomeVideos] = useState([]);
+const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
+
 
   // Fetch appointments
   const fetchAppointments = async () => {
@@ -175,6 +178,13 @@ const AdminPanel = () => {
         >
           View Courses
         </button>
+        <button
+  className={activeTab === "homeVideos" ? "active-tab" : ""}
+  onClick={() => setActiveTab("homeVideos")}
+>
+  Home Videos
+</button>
+
       </div>
 
       {/* Tab Content */}
@@ -333,8 +343,57 @@ const AdminPanel = () => {
             ))}
           </div>
         </div>
-        
         )}
+        {activeTab === "homeVideos" && (
+  <div className="home-videos-admin">
+    <h2>Manage Home Page YouTube Videos</h2>
+
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!newHomeVideo.title || !newHomeVideo.videoId) return;
+        setHomeVideos([...homeVideos, newHomeVideo]);
+        setNewHomeVideo({ title: '', videoId: '' });
+      }}
+    >
+      <input
+        type="text"
+        placeholder="Video Title"
+        value={newHomeVideo.title}
+        onChange={(e) =>
+          setNewHomeVideo({ ...newHomeVideo, title: e.target.value })
+        }
+        required
+      />
+      <input
+        type="text"
+        placeholder="YouTube Video ID (e.g., dQw4w9WgXcQ)"
+        value={newHomeVideo.videoId}
+        onChange={(e) =>
+          setNewHomeVideo({ ...newHomeVideo, videoId: e.target.value })
+        }
+        required
+      />
+      <button type="submit">Add Video</button>
+    </form>
+
+    <div className="video-preview-list">
+      {homeVideos.map((vid, index) => (
+        <div key={index} style={{ margin: '15px 0' }}>
+          <img
+            src={`https://img.youtube.com/vi/${vid.videoId}/mqdefault.jpg`}
+            alt={vid.title}
+            width={160}
+            height={90}
+            style={{ border: '2px solid #6b8e72', borderRadius: '4px' }}
+          />
+          <p>{vid.title}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );

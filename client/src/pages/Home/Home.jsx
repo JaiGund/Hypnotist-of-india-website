@@ -12,6 +12,30 @@ const Home = () => {
             <h1>Connect with Your Mind, Body, and Soul</h1>
             <p>Welcome to Meditation Center of India, the online meditation platform that makes practicing mindfulness easier than ever.</p>
             <Link to={'/bookapointment'}><button className="cta-button">Start Now</button></Link>
+            <div className="yt-thumbnails">
+  {[
+    { title: 'Morning Meditation', videoId: 'inpok4MKVLM' },
+    { title: 'Mindfulness in 10 Minutes', videoId: 'ZToicYcHIOU' },
+    { title: 'Relax for Sleep', videoId: 'Z9vRUanQqOI' },
+  ].map((video) => (
+    <a
+      key={video.videoId}
+      href={`/watch/${video.videoId}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="yt-thumb-link"
+    >
+      <img
+        src={`https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg`}
+        alt={video.title}
+        className="yt-thumb-small"
+      />
+    </a>
+  ))}
+</div>
+
+
+
           </div>
           <div className="hero-image">
             <img src="https://static.wixstatic.com/media/11062b_f87a3c7eba424bd9bcb995008f52dbac~mv2.jpg/v1/crop/x_321,y_0,w_4650,h_6200/fill/w_408,h_549,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11062b_f87a3c7eba424bd9bcb995008f52dbac~mv2.jpg" alt="Person meditating in lotus position" />
@@ -52,7 +76,7 @@ const Home = () => {
       </div>
 
       {/* Instructor Section */}
-      <div className="instructor-section">
+      {/* <div className="instructor-section">
         <h2>YOUR INSTRUCTOR</h2>
         <div className="instructor-content">
           <div className="instructor-image"></div>
@@ -62,7 +86,7 @@ const Home = () => {
             <Link to={'/instructor'}><button>Read More</button></Link>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Footer Call-to-Action */}
       <div className="footer-cta">
