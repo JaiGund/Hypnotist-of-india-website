@@ -10,6 +10,8 @@ import courseRoutes from './routes/courseRoutes.js';
 import purchaseRoutes from './routes/purchaseRoutes.js';
 import paymentRoutes from './routes/paymentRoute.js'
 import appointmentsRoutes from './routes/appointmentRoute.js'
+import homeVideoRoutes from './routes/homeVideoRoutes.js'
+
 
 dotenv.config();
 
@@ -36,6 +38,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api', purchaseRoutes);
 app.use('/api/payment',paymentRoutes);
 app.use('/api', appointmentsRoutes);
+app.use('/api/homevideos', homeVideoRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

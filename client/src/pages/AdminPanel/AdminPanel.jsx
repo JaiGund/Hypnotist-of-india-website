@@ -35,7 +35,7 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
       console.error("Error fetching appointments:", error);
     }
   };
-
+  
   // Fetch courses
   const fetchCourses = async () => {
     try {
@@ -45,6 +45,39 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
       console.error("Error fetching courses:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchHomeVideos = async () => {
+      try {
+        const res = await axios.get(`${url}/api/homevideos`);
+        setHomeVideos(res.data);
+      } catch (error) {
+        console.error('Error fetching home videos:', error);
+      }
+    };
+    fetchHomeVideos();
+  }, [url]);
+  
+  const handleAddHomeVideo = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${url}/api/homevideos/add`, newHomeVideo);
+      setHomeVideos((prev) => [...prev, res.data]);
+      setNewHomeVideo({ title: '', videoId: '' });
+    } catch (err) {
+      console.error('Failed to add home video:', err);
+    }
+  };
+  
+  const handleDeleteHomeVideo = async (id) => {
+    try {
+      await axios.delete(`${url}/api/homevideos/${id}`);
+      setHomeVideos((prev) => prev.filter((v) => v._id !== id));
+    } catch (err) {
+      console.error('Failed to delete home video:', err);
+    }
+  };
+  
 
   // Mark appointment as read
   const markAsRead = async (id, currentStatus) => {
@@ -348,14 +381,8 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
   <div className="home-videos-admin">
     <h2>Manage Home Page YouTube Videos</h2>
 
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!newHomeVideo.title || !newHomeVideo.videoId) return;
-        setHomeVideos([...homeVideos, newHomeVideo]);
-        setNewHomeVideo({ title: '', videoId: '' });
-      }}
-    >
+    <form onSubmit={handleAddHomeVideo}>
+
       <input
         type="text"
         placeholder="Video Title"
@@ -380,15 +407,30 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
     <div className="video-preview-list">
       {homeVideos.map((vid, index) => (
         <div key={index} style={{ margin: '15px 0' }}>
-          <img
-            src={`https://img.youtube.com/vi/${vid.videoId}/mqdefault.jpg`}
-            alt={vid.title}
-            width={160}
-            height={90}
-            style={{ border: '2px solid #6b8e72', borderRadius: '4px' }}
-          />
-          <p>{vid.title}</p>
-        </div>
+        <img
+          src={`https://img.youtube.com/vi/${vid.videoId}/mqdefault.jpg`}
+          alt={vid.title}
+          width={160}
+          height={90}
+          style={{ border: '2px solid #6b8e72', borderRadius: '4px' }}
+        />
+        <p>{vid.title}</p>
+        <button
+          onClick={() => handleDeleteHomeVideo(vid._id)}
+          style={{
+            backgroundColor: '#d9534f',
+            color: 'white',
+            padding: '5px 10px',
+            border: 'none',
+            borderRadius: '4px',
+            marginTop: '5px',
+            cursor: 'pointer',
+          }}
+        >
+          Delete
+        </button>
+      </div>
+      
       ))}
     </div>
   </div>
