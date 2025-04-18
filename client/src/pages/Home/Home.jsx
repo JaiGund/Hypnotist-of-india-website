@@ -1,8 +1,30 @@
 import React from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext'; // adjust path if needed
+
 
 const Home = () => {
+
+  const { url } = useContext(AuthContext);
+const [homeVideos, setHomeVideos] = useState([]);
+
+useEffect(() => {
+  const fetchVideos = async () => {
+    try {
+      const res = await axios.get(`${url}/api/homevideos`);
+      setHomeVideos(res.data);
+    } catch (error) {
+      console.error('Failed to fetch home videos:', error);
+    }
+  };
+
+  fetchVideos();
+}, [url]);
+
+
   return (
     <div className="home">
       {/* Hero Section */}
@@ -13,13 +35,9 @@ const Home = () => {
             <p>Welcome to Meditation Center of India, the online meditation platform that makes practicing mindfulness easier than ever.</p>
             <Link to={'/bookapointment'}><button className="cta-button">Start Now</button></Link>
             <div className="yt-thumbnails">
-  {[
-    { title: 'Morning Meditation', videoId: 'inpok4MKVLM' },
-    { title: 'Mindfulness in 10 Minutes', videoId: 'ZToicYcHIOU' },
-    { title: 'Relax for Sleep', videoId: 'Z9vRUanQqOI' },
-  ].map((video) => (
+  {homeVideos.map((video) => (
     <a
-      key={video.videoId}
+      key={video._id}
       href={`/watch/${video.videoId}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -33,6 +51,7 @@ const Home = () => {
     </a>
   ))}
 </div>
+
 
 
 
