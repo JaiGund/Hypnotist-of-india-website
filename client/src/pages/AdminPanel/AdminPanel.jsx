@@ -23,7 +23,13 @@ const AdminPanel = () => {
 
   const [editCourseId, setEditCourseId] = useState(null); // For editing courses
   const [homeVideos, setHomeVideos] = useState([]);
-const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
+  const [newHomeVideo, setNewHomeVideo] = useState({
+    title: '',
+    videoId: '',
+    isPaid: false,
+    price: '',
+  });
+  
 
 
   // Fetch appointments
@@ -61,13 +67,28 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
   const handleAddHomeVideo = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${url}/api/homevideos/add`, newHomeVideo);
+      const payload = {
+        title: newHomeVideo.title,
+        videoId: newHomeVideo.videoId,
+        isPaid: newHomeVideo.isPaid,
+        price: newHomeVideo.isPaid ? newHomeVideo.price : 0,
+      };
+  
+      const res = await axios.post(`${url}/api/homevideos/add`, payload);
       setHomeVideos((prev) => [...prev, res.data]);
-      setNewHomeVideo({ title: '', videoId: '' });
+  
+      // Reset form
+      setNewHomeVideo({
+        title: '',
+        videoId: '',
+        isPaid: false,
+        price: '',
+      });
     } catch (err) {
       console.error('Failed to add home video:', err);
     }
   };
+  
   
   const handleDeleteHomeVideo = async (id) => {
     try {
@@ -383,25 +404,51 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
 
     <form onSubmit={handleAddHomeVideo}>
 
-      <input
-        type="text"
-        placeholder="Video Title"
-        value={newHomeVideo.title}
-        onChange={(e) =>
-          setNewHomeVideo({ ...newHomeVideo, title: e.target.value })
-        }
-        required
-      />
-      <input
-        type="text"
-        placeholder="YouTube Video ID (e.g., dQw4w9WgXcQ)"
-        value={newHomeVideo.videoId}
-        onChange={(e) =>
-          setNewHomeVideo({ ...newHomeVideo, videoId: e.target.value })
-        }
-        required
-      />
-      <button type="submit">Add Video</button>
+    <input
+  type="text"
+  placeholder="Video Title"
+  value={newHomeVideo.title}
+  onChange={(e) =>
+    setNewHomeVideo({ ...newHomeVideo, title: e.target.value })
+  }
+  required
+/>
+
+<input
+  type="text"
+  placeholder="YouTube Video ID (e.g., dQw4w9WgXcQ)"
+  value={newHomeVideo.videoId}
+  onChange={(e) =>
+    setNewHomeVideo({ ...newHomeVideo, videoId: e.target.value })
+  }
+  required
+/>
+
+<label style={{ marginTop: '10px', display: 'block' }}>
+  <input
+    type="checkbox"
+    checked={newHomeVideo.isPaid}
+    onChange={(e) =>
+      setNewHomeVideo({ ...newHomeVideo, isPaid: e.target.checked })
+    }
+  />
+  {' '}This is a paid video
+</label>
+
+{newHomeVideo.isPaid && (
+  <input
+    type="number"
+    placeholder="Price (in ₹)"
+    value={newHomeVideo.price}
+    onChange={(e) =>
+      setNewHomeVideo({ ...newHomeVideo, price: e.target.value })
+    }
+    required
+  />
+)}
+
+<button type="submit">Add Video</button>
+
     </form>
 
     <div className="video-preview-list">
@@ -415,6 +462,7 @@ const [newHomeVideo, setNewHomeVideo] = useState({ title: '', videoId: '' });
           style={{ border: '2px solid #6b8e72', borderRadius: '4px' }}
         />
         <p>{vid.title}</p>
+        <p>{vid.isPaid ? `Paid - ₹${vid.price}` : 'Free'}</p>
         <button
           onClick={() => handleDeleteHomeVideo(vid._id)}
           style={{

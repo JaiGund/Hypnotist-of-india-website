@@ -16,14 +16,22 @@ router.get('/', async (req, res) => {
 // POST a new video
 router.post('/add', async (req, res) => {
   try {
-    const { title, videoId } = req.body;
-    const newVideo = new HomeVideo({ title, videoId });
+    const { title, videoId, isPaid, price } = req.body;
+
+    const newVideo = new HomeVideo({
+      title,
+      videoId,
+      isPaid: isPaid || false,
+      price: isPaid ? price : 0,
+    });
+
     await newVideo.save();
     res.status(201).json(newVideo);
   } catch (err) {
     res.status(400).json({ message: 'Error saving video' });
   }
 });
+
 
 // DELETE a video
 router.delete('/:id', async (req, res) => {
