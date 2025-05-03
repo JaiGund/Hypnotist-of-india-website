@@ -21,12 +21,19 @@ const App = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (user?.role === "owner") {
+    const currentPath = window.location.pathname;
+  
+    if (user?.role === "owner" && currentPath !== "/adminpanel") {
       navigate("/adminpanel");
-    } else if (user?.role === "user") {
+    } else if (
+      user?.role === "user" &&
+      !currentPath.startsWith("/watch/") &&
+      currentPath !== "/"
+    ) {
       navigate("/");
     }
-  }, [user, isAuthenticated]);
+  }, [user, isAuthenticated, navigate]);
+  
   return (
     <div>
       <Navbar />

@@ -10,7 +10,7 @@ const CourseVideos = () => {
   const [error, setError] = useState(null);
   const [isYTReady, setIsYTReady] = useState(false);
   const playerRefs = useRef({});
-  const { url } = useContext(AuthContext);
+  const { url,user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchCourse = async () => {
