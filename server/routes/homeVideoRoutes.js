@@ -43,5 +43,17 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// GET single home video by YouTube videoId
+router.get('/:videoId', async (req, res) => {
+  try {
+    const video = await HomeVideo.findOne({ videoId: req.params.videoId });
+    if (!video) return res.status(404).json({ message: 'Video not found' });
+    res.json(video);
+  } catch (err) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 export default router;
 

@@ -1,11 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const WatchVideo = () => {
   const { videoId } = useParams();
   const playerRef = useRef(null);
   const [isYTReady, setIsYTReady] = useState(false);
+  const [videoInfo, setVideoInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [hasPurchased, setHasPurchased] = useState(false); // Set this based on your backend
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  // Load YouTube Iframe API
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://www.youtube.com/iframe_api';
@@ -20,13 +27,35 @@ const WatchVideo = () => {
     };
   }, []);
 
+  // Fetch video data
   useEffect(() => {
-    if (isYTReady && !playerRef.current) {
+    const fetchVideoInfo = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/homevideos/${videoId}`, {
+          withCredentials: true,
+        });
+        setVideoInfo(res.data);
+        setLoading(false);
+
+        // In the future: Set hasPurchased based on backend response
+        // For now, fake it: setHasPurchased(true); 
+      } catch (err) {
+        setError('Failed to fetch video');
+        setLoading(false);
+      }
+    };
+
+    fetchVideoInfo();
+  }, [videoId]);
+
+  // Load the player
+  useEffect(() => {
+    if (isYTReady && !playerRef.current && videoInfo) {
       playerRef.current = new window.YT.Player('youtube-player', {
-        videoId: videoId,
+        videoId: videoInfo.videoId,
         playerVars: {
           autoplay: 0,
-          controls: 0,
+          controls: 1,
           modestbranding: 1,
           rel: 0,
           showinfo: 0,
@@ -34,33 +63,53 @@ const WatchVideo = () => {
         },
       });
     }
-  }, [isYTReady, videoId]);
+  }, [isYTReady, videoInfo]);
 
   const playVideo = () => {
-    if (playerRef.current) playerRef.current.playVideo();
+    if (playerRef.current) {
+      playerRef.current.playVideo();
+      setIsPlaying(true);
+    }
   };
 
   const pauseVideo = () => {
-    if (playerRef.current) playerRef.current.pauseVideo();
+    if (playerRef.current) {
+      playerRef.current.pauseVideo();
+      setIsPlaying(false);
+    }
   };
+
+  const handleBuyNow = () => {
+    alert('Trigger Razorpay payment here.');
+    // After successful payment:
+    // setHasPurchased(true);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  const isLocked = videoInfo.isPaid && !hasPurchased;
 
   return (
     <div style={containerStyle}>
-      <h2>Watch Video</h2>
+      <h2>{videoInfo.title}</h2>
 
       <div style={playerWrapperStyle}>
         <div id="youtube-player" style={iframeStyle}></div>
-        <div style={overlayStyle}></div> {/* Block interaction */}
+        {/* Overlay always present */}
+        <div style={overlayStyle}></div>
       </div>
 
-      <div style={controlsStyle}>
-        <button onClick={playVideo} style={btnStyle}>▶️ Play</button>
-        <button onClick={pauseVideo} style={btnStyle}>⏸ Pause</button>
-      </div>
-
-      {/* <p style={{ marginTop: '30px' }}>
-        Share this video: <code>{window.location.href}</code>
-      </p> */}
+      {isLocked ? (
+        <button onClick={handleBuyNow} style={btnStyle}>
+          🔒 Buy Now for ₹{videoInfo.price}
+        </button>
+      ) : (
+        <div style={controlsStyle}>
+          <button onClick={playVideo} style={btnStyle}>▶️ Play</button>
+          <button onClick={pauseVideo} style={btnStyle}>⏸ Pause</button>
+        </div>
+      )}
     </div>
   );
 };
@@ -91,7 +140,7 @@ const overlayStyle = {
   width: '100%',
   height: '100%',
   zIndex: 2,
-  backgroundColor: 'transparent', // optional: use rgba(0,0,0,0.1) to show dimmed effect
+  backgroundColor: 'rgba(0,0,0,0)',
   cursor: 'not-allowed',
 };
 
