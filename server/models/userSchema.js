@@ -21,6 +21,16 @@ const userSchema = new mongoose.Schema({
       expiryDate: { type: Date },
     },
   ],
+  boughtVideos: [
+    {
+      video: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "HomeVideo",
+        required: true,
+      },
+      purchaseDate: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 // Calculate expiry date for bought courses

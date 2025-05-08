@@ -79,11 +79,67 @@ const WatchVideo = () => {
     }
   };
 
-  const handleBuyNow = () => {
-    alert('Trigger Razorpay payment here.');
-    // After successful payment:
-    // setHasPurchased(true);
+  const handleBuyNow = async () => {
+    try {
+      const { data } = await axios.post(
+        'http://localhost:5000/api/payment/order',
+        { videoId: videoInfo._id }, // Pass videoId for purchasing videos
+        { withCredentials: true }
+      );
+  
+      const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
+  
+      const isRazorpayLoaded = await loadRazorpayScript();
+      if (!isRazorpayLoaded) {
+        console.error('Razorpay SDK failed to load.');
+        return;
+      }
+  
+      const options = {
+        key: data.razorpayKey,
+        amount: data.amount,
+        currency: data.currency,
+        name: 'Meditation Of India',
+        description: videoInfo.title,
+        order_id: data.orderId,
+        handler: async (response) => {
+          try {
+            const verifyResponse = await axios.post(
+              'http://localhost:5000/api/payment/verify',
+              {
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                signature: response.razorpay_signature,
+                videoId: videoInfo._id,
+              },
+              { withCredentials: true }
+            );
+            console.log(verifyResponse.data.message);
+            setHasPurchased(true); // Unlock the video after successful payment
+          } catch (err) {
+            console.error('Error verifying payment:', err);
+          }
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+  
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error('Error initiating purchase:', err);
+    }
   };
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;

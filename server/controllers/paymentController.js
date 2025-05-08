@@ -1,7 +1,9 @@
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import Course from '../models/courseSchema.js';
-import dotenv from 'dotenv'
+import HomeVideo from '../models/homeVideoModel.js';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -10,25 +12,39 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Step 1: Create Razorpay Order
 export const createOrder = async (req, res) => {
-  const { courseId } = req.body;
-
-  if (!courseId) {
-    return res.status(400).json({ message: 'Course ID is required' });
-  }
+  const { courseId, videoId } = req.body;
 
   try {
-    const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
+    let item;
+    let receiptPrefix;
+
+    if (courseId) {
+      if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        return res.status(400).json({ message: 'Invalid Course ID' });
+      }
+      item = await Course.findById(courseId);
+      receiptPrefix = `course_${courseId}`;
+    } else if (videoId) {
+      if (!mongoose.Types.ObjectId.isValid(videoId)) {
+        return res.status(400).json({ message: 'Invalid Video ID' });
+      }
+      item = await HomeVideo.findById(videoId);
+      receiptPrefix = `video_${videoId}`;
+    } else {
+      return res.status(400).json({ message: 'Course ID or Video ID is required' });
     }
 
-    const amount = course.price * 100; // Convert price to paisa
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    const amount = item.price * 100;
+
     const options = {
       amount,
       currency: 'INR',
-      receipt: `receipt_${courseId}`,
+      receipt: receiptPrefix,
     };
 
     const order = await razorpay.orders.create(options);
@@ -44,9 +60,9 @@ export const createOrder = async (req, res) => {
   }
 };
 
-// Step 2: Verify Razorpay Payment
+
 export const verifyPayment = async (req, res) => {
-  const { paymentId, orderId, signature, courseId } = req.body;
+  const { paymentId, orderId, signature, courseId, videoId } = req.body;
 
   try {
     const generatedSignature = crypto
@@ -59,12 +75,21 @@ export const verifyPayment = async (req, res) => {
     }
 
     const user = req.user;
-    user.boughtCourses.push({ course: courseId });
+
+    if (courseId) {
+      user.boughtCourses.push({ course: courseId });
+    } else if (videoId) {
+      user.boughtVideos.push({ video: videoId });
+    } else {
+      return res.status(400).json({ message: 'No item specified for purchase' });
+    }
+
     await user.save();
 
-    res.status(200).json({ message: 'Payment verified and course purchased successfully' });
+    res.status(200).json({ message: 'Payment verified and item purchased successfully' });
   } catch (error) {
     console.error('Error verifying payment:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
