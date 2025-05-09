@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import Home from './pages/Home/Home'
@@ -20,17 +20,23 @@ import WatchVideo from './pages/WatchVideo/WatchVideo'; // adjust path according
 const App = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const redirected = useRef(false); // <-- Track if already redirected
+
   useEffect(() => {
+    if (!user || redirected.current) return;
+
     const currentPath = window.location.pathname;
-  
+
     if (user?.role === "owner" && currentPath !== "/adminpanel") {
       navigate("/adminpanel");
+      redirected.current = true;
     } else if (
       user?.role === "user" &&
       !currentPath.startsWith("/watch/") &&
       currentPath !== "/"
     ) {
       navigate("/");
+      redirected.current = true;
     }
   }, [user, isAuthenticated, navigate]);
   

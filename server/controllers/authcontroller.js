@@ -70,7 +70,7 @@ const signUp = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
       sameSite: "strict", // Adjust to "lax" or "none" if needed
-      maxAge: 3600000, // 1 hour
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // Send the response with the token
@@ -116,7 +116,7 @@ const signIn = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
       sameSite: "strict", // Adjust to "lax" or "none" if needed
-      maxAge: 3600000, // 1 hour
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // Send the response
