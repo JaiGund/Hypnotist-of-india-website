@@ -1,6 +1,8 @@
 // routes/homeVideoRoutes.js
 import express from 'express';
 import HomeVideo from '../models/homeVideoModel.js'; // also .js required
+import User from "../models/userSchema.js"; 
+import { protect } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 // GET all home videos
@@ -53,6 +55,30 @@ router.get('/:videoId', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+router.get('/:videoId/isPurchased', protect, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { videoId } = req.params;
+
+    const video = await HomeVideo.findOne({ videoId }); // videoId = YouTube ID
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+
+    const user = await User.findById(userId);
+
+    const hasPurchased = user.boughtVideos.some(
+      (v) => v.video.toString() === video._id.toString()
+    );
+
+    res.json({ hasPurchased });
+  } catch (err) {
+    console.error('Error in isPurchased route:', err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 
 
 export default router;

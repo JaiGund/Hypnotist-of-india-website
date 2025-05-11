@@ -27,27 +27,6 @@ const WatchVideo = () => {
     };
   }, []);
 
-  // Fetch video data
-  useEffect(() => {
-    const fetchVideoInfo = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/homevideos/${videoId}`, {
-          withCredentials: true,
-        });
-        setVideoInfo(res.data);
-        setLoading(false);
-
-        // In the future: Set hasPurchased based on backend response
-        // For now, fake it: setHasPurchased(true); 
-      } catch (err) {
-        setError('Failed to fetch video');
-        setLoading(false);
-      }
-    };
-
-    fetchVideoInfo();
-  }, [videoId]);
-
   // Load the player
   useEffect(() => {
     if (isYTReady && !playerRef.current && videoInfo) {
@@ -64,6 +43,31 @@ const WatchVideo = () => {
       });
     }
   }, [isYTReady, videoInfo]);
+
+  useEffect(() => {
+    const fetchVideoInfo = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/homevideos/${videoId}`, {
+          withCredentials: true,
+        });
+        setVideoInfo(res.data);
+  
+        // Fetch purchase status
+        const purchaseRes = await axios.get(`http://localhost:5000/api/homevideos/${videoId}/isPurchased`, {
+          withCredentials: true,
+        });
+        setHasPurchased(purchaseRes.data.hasPurchased);
+  
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to fetch video');
+        setLoading(false);
+      }
+    };
+  
+    fetchVideoInfo();
+  }, [videoId]);
+  
 
   const playVideo = () => {
     if (playerRef.current) {
@@ -150,13 +154,14 @@ const WatchVideo = () => {
   return (
     <div style={containerStyle}>
       <h2>{videoInfo.title}</h2>
-
+  
       <div style={playerWrapperStyle}>
         <div id="youtube-player" style={iframeStyle}></div>
-        {/* Overlay always present */}
+  
+        {/* Only show overlay if video is locked */}
         <div style={overlayStyle}></div>
       </div>
-
+  
       {isLocked ? (
         <button onClick={handleBuyNow} style={btnStyle}>
           🔒 Buy Now for ₹{videoInfo.price}
@@ -169,6 +174,7 @@ const WatchVideo = () => {
       )}
     </div>
   );
+  
 };
 
 const containerStyle = {
