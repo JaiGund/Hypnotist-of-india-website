@@ -3,26 +3,22 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './CourseVideos.css';
 import { AuthContext } from '../../context/AuthContext';
+import { loadYouTubeAPI } from '../../../utils/loadYouTubeAPI';
 
 const CourseVideos = () => {
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
   const [error, setError] = useState(null);
-  const [isYTReady, setIsYTReady] = useState(false);
   const playerRefs = useRef({});
-  const { url,user } = useContext(AuthContext);
+  const { url } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchCourse = async () => {
+    const fetchData = async () => {
       try {
-        // Fetch all purchased courses
         const response = await axios.get(`${url}/api/mycourses`, { withCredentials: true });
-
-        // Find the specific course by ID
-        const purchasedCourse = response.data.find((course) => course._id === courseId);
-
+        const purchasedCourse = response.data.find((c) => c._id === courseId);
         if (purchasedCourse) {
-          setCourse(purchasedCourse.course); // Set the course data from the purchased course
+          setCourse(purchasedCourse.course);
         } else {
           setError('Course not found.');
         }
@@ -31,53 +27,50 @@ const CourseVideos = () => {
       }
     };
 
-    fetchCourse();
-
-    // Load YouTube IFrame API
-    const script = document.createElement('script');
-    script.src = 'https://www.youtube.com/iframe_api';
-    document.body.appendChild(script);
-
-    window.onYouTubeIframeAPIReady = () => {
-      setIsYTReady(true);
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    fetchData();
   }, [courseId, url]);
 
-  // Function to initialize the YouTube player
-  const initializePlayer = (videoIndex, videoId) => {
-    if (isYTReady && !playerRefs.current[videoIndex]) {
-      playerRefs.current[videoIndex] = new window.YT.Player(`youtube-player-${videoIndex}`, {
-        videoId: videoId,
-        playerVars: { autoplay: 0, controls: 1, modestbranding: 1, rel: 0, showinfo: 0, iv_load_policy: 3 },
-      });
-    }
-  };
-
-  // Play and pause video functions
-  const playVideo = (videoIndex) => {
-    const player = playerRefs.current[videoIndex];
-    if (player) player.playVideo();
-  };
-  
-  const pauseVideo = (videoIndex) => {
-    const player = playerRefs.current[videoIndex];
-    if (player) player.pauseVideo();
-  };
-
-  // Re-initialize the players after course data is loaded and YouTube API is ready
   useEffect(() => {
-    if (course && isYTReady) {
-      // Initialize players for all course videos
+    const initializePlayers = async () => {
+      if (!course || !Array.isArray(course.links) || course.links.length === 0) return;
+
+      const YT = await loadYouTubeAPI();
+
       course.links.forEach((link, index) => {
-        const videoId = link.split('v=')[1];
-        initializePlayer(index, videoId);
+        const videoId = extractVideoId(link);
+        const playerContainerId = `youtube-player-${index}`;
+
+        const waitForIframe = setInterval(() => {
+          const container = document.getElementById(playerContainerId);
+          if (container && YT && typeof YT.Player === 'function' && !playerRefs.current[index]) {
+            clearInterval(waitForIframe);
+            playerRefs.current[index] = new YT.Player(playerContainerId, {
+              videoId: videoId,
+              playerVars: {
+                autoplay: 0,
+                controls: 1,
+                modestbranding: 1,
+                rel: 0,
+                showinfo: 0,
+                iv_load_policy: 3,
+              },
+            });
+          }
+        }, 300);
       });
-    }
-  }, [course, isYTReady]);
+    };
+
+    initializePlayers();
+  }, [course]);
+
+  const extractVideoId = (url) => {
+    const regExp = /(?:youtube\.com.*(?:\?|&)v=|youtu\.be\/)([^&]+)/;
+    const match = url.match(regExp);
+    return match && match[1] ? match[1] : null;
+  };
+
+  const playVideo = (index) => playerRefs.current[index]?.playVideo();
+  const pauseVideo = (index) => playerRefs.current[index]?.pauseVideo();
 
   return (
     <div className="course-videos-container">
@@ -90,10 +83,7 @@ const CourseVideos = () => {
             <ul>
               {course.links.map((link, index) => (
                 <li key={index}>
-                  <div
-                    id={`youtube-player-${index}`}
-                    className="video-player"
-                  ></div>
+                  <div id={`youtube-player-${index}`} className="video-player"></div>
                   <div className="video-controls">
                     <button onClick={() => playVideo(index)}>Play</button>
                     <button onClick={() => pauseVideo(index)}>Pause</button>
