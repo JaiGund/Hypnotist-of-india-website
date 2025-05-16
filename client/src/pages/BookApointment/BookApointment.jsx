@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import './BookApointment.css';
 import { AuthContext } from '../../context/AuthContext';
@@ -16,7 +16,7 @@ const BookAppointment = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
-  const {url} = useState(AuthContext)
+  const {url} = useContext(AuthContext)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
