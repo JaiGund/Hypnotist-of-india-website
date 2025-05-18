@@ -47,13 +47,13 @@ const WatchVideo = () => {
   useEffect(() => {
     const fetchVideoInfo = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/homevideos/${videoId}`, {
+        const res = await axios.get(`https://meditationcenterofindia.netlify.app/api/homevideos/${videoId}`, {
           withCredentials: true,
         });
         setVideoInfo(res.data);
   
         // Fetch purchase status
-        const purchaseRes = await axios.get(`http://localhost:5000/api/homevideos/${videoId}/isPurchased`, {
+        const purchaseRes = await axios.get(`https://meditationcenterofindia.netlify.app/api/homevideos/${videoId}/isPurchased`, {
           withCredentials: true,
         });
         setHasPurchased(purchaseRes.data.hasPurchased);
@@ -86,7 +86,7 @@ const WatchVideo = () => {
   const handleBuyNow = async () => {
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/api/payment/order',
+        'https://meditationcenterofindia.netlify.app/api/payment/order',
         { videoId: videoInfo._id }, // Pass videoId for purchasing videos
         { withCredentials: true }
       );
@@ -117,7 +117,7 @@ const WatchVideo = () => {
         handler: async (response) => {
           try {
             const verifyResponse = await axios.post(
-              'http://localhost:5000/api/payment/verify',
+              'https://meditationcenterofindia.netlify.app/api/payment/verify',
               {
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
