@@ -23,7 +23,7 @@ connectToDb();
 // Middleware
 app.use(bodyParser.json());
 app.use(cookieParser()); // Middleware to parse cookies
-const allowedOrigins = ["http://localhost:5173"]; // Replace with your frontend URL
+const allowedOrigins = [ "https://meditationcenterofindia.netlify.app"]; // Replace with your frontend URL
 
 app.use(
   cors({
