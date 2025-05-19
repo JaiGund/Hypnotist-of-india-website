@@ -27,10 +27,11 @@ const allowedOrigins = [ "https://meditationcenterofindia.netlify.app"]; // Repl
 
 app.use(
   cors({
-    origin: allowedOrigins,
-    credentials: true, // Allow cookies to be sent
+    origin: "https://meditationcenterofindia.netlify.app", // ✅ keep as string
+    credentials: true, // ✅ required to send cookies
   })
 );
+
 
 // Routes
 app.use('/api/auth', authRoutes);

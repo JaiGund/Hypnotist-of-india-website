@@ -68,10 +68,11 @@ const signUp = async (req, res) => {
     // Set the token in a cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      sameSite: "lax", // Adjust to "lax" or "none" if needed
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: process.env.NODE_ENV === "production", // ✅ KEEP
+      sameSite: "none", // ✅ CHANGE THIS
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    
 
     // Send the response with the token
     res.status(201).json({
@@ -114,10 +115,11 @@ const signIn = async (req, res) => {
     // Set the token in a cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      sameSite: "lax", // Adjust to "lax" or "none" if needed
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: process.env.NODE_ENV === "production", // ✅ KEEP
+      sameSite: "none", // ✅ CHANGE THIS
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    
 
     // Send the response
     res.status(200).json({
